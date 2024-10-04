@@ -21,7 +21,12 @@ workspace {
 
             netflixSystem = softwareSystem "Netflix System" "Allows users to buy subscription, view lists of contents, give a review, watch" {
                 webApplication = container "Web Application" "Reverse proxy" "Nginx"
-                singlePageApplication = container "Single-Page Application" "Provides functionality to customers via their web browser" "JavaScript, React, Vite" "Web Browser"
+                singlePageApplication = container "Single-Page Application" "Provides functionality to customers via their web browser" "JavaScript, React, Vite" "Web Browser" {
+                    fetchAuth = component "Custom fetch with auth" "Provides automatic access token attaching and refreshing"
+                    services = component "Services Layer" "Provides requests to backend"
+                    components = component "UI Components Layer" "Provides React components"
+                    store = component "State Management" "Stores app state" "Mobx"
+                }
                 
                 group "Subscription Service" {
                     subscriptionApi = container "Subscription Service API" "Provides functionality with subscription (buying, checking for bought ones) via JSON/HTTPS API" "NestJS" "Hexagon"
@@ -99,16 +104,22 @@ workspace {
 
         netflixSystem.webApplication -> netflixSystem.singlePageApplication "Delivers to customer's web browser"
 
-        netflixSystem.singlePageApplication -> netflixSystem.supportApi "Chatting with support staff" "SignalR"
+        netflixSystem.singlePageApplication.components -> netflixSystem.singlePageApplication.services "Uses"
+        netflixSystem.singlePageApplication.services -> netflixSystem.singlePageApplication.fetchAuth "Uses"
+        netflixSystem.singlePageApplication.components -> netflixSystem.singlePageApplication.store "Uses"
+
+        netflixSystem.singlePageApplication.components -> netflixSystem.supportApi "Chatting with support staff" "SignalR"
         netflixSystem.supportApi -> netflixSystem.supportBroker "Sends command to save messages" "AMQP"
         netflixSystem.supportBroker -> netflixSystem.supportPersistentApi "Sends command to save messages" "AMQP"
         netflixSystem.supportPersistentApi -> netflixSystem.supportDb "Reads and writes to" "SQL/TCP (EF Core)"
 
-        netflixSystem.singlePageApplication -> yandexMaps "Uses maps API"
-        netflixSystem.singlePageApplication -> netflixSystem.subscriptionApi "Manipulating with subscription" "JSON/HTTPS"
+        netflixSystem.singlePageApplication.components -> yandexMaps "Uses maps API"
+        netflixSystem.singlePageApplication.fetchAuth -> netflixSystem.subscriptionApi "Manipulating with subscription" "JSON/HTTPS"
         netflixSystem.subscriptionApi -> netflixSystem.subscriptionDb "Reads and writes to" "SQL/TCP (TypeORM)"
 
-        netflixSystem.singlePageApplication -> netflixSystem.generalApi "Auth, review writing, content delivering" "JSON/HTTPS"
+        netflixSystem.singlePageApplication.fetchAuth -> netflixSystem.generalApi "Auth, review writing, content delivering" "JSON/HTTPS"
+        netflixSystem.singlePageApplication.components -> netflixSystem.generalApi "Notifications" "SignalR"
+
         netflixSystem.generalApi -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi -> netflixSystem.identityDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi -> netflixSystem.cache "Reads and writes to" "TCP"
@@ -206,6 +217,11 @@ workspace {
         }
         
         component netflixSystem.generalApi "ComponentContext" {
+            include *
+            autolayout tb
+        }
+
+        component netflixSystem.singlePageApplication "ComponentContext_SPA" {
             include *
             autolayout tb
         }
