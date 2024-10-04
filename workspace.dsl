@@ -3,6 +3,10 @@ workspace {
     !identifiers hierarchical
 
     model {
+        properties {
+            "structurizr.groupSeparator" "/"
+        }
+
         user = person "User"
 
         group "External authentication providers" {
@@ -11,8 +15,9 @@ workspace {
         }
 
         group "Netflix" {
-            supportStaff = person "Customer Service Staff"
+            supportStaff = person "Customer Support Staff"
             admin = person "Admin"
+            moderator = person "Moderator"
 
             netflixSystem = softwareSystem "Netflix System" "Allows users to buy subscription, view lists of contents, give a review, watch" {
                 webApplication = container "Web Application" "Reverse proxy" "Nginx"
@@ -24,9 +29,9 @@ workspace {
                 }
 
                 group "Support Service" {
-                    supportApi = container "Support Service API" "" "" "Hexagon"
+                    supportApi = container "Support Service API" "Provides functionality to chat with customer support staff" "ASP.NET Core" "Hexagon"
                     supportBroker = container "Support Broker" "" "RabbitMQ" "Pipe"
-                    supportPersistentApi = container "Support Service Persistent API" "" ""
+                    supportPersistentApi = container "Support Service Persistent API" "Consumes messages to save logs of support chat" "ASP.NET Core"
                     supportDb = container "Support Service Database" "Stores data related to users' communication with support staff" "PostgreSQL" "Database"
                 }
 
@@ -61,36 +66,36 @@ workspace {
                         commentNotificationRepository = component "Comment notification repository" "Provides methods to interact with notifications in database" "Repository"
                         tokenRepository = component "Token repository" "Provides methods to interact with tokens in identity database" "Repository"
                     }
-                    generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
                     generalDb = container "General Database" "Stores reviews, contents' information, favourites, users" "PostgreSQL" "Database"
                     identityDb = container "Identity Database" "Stores data related to user's identity, auth" "PostgreSQL" "Database"
                     cache = container "Cache" "Caches presigned URLs from S3 storage" "Redis" "Database"
-                    tempMetadaStore = container "Temporary Metadata Store" "" "Redis" "Database"
-                    tempS3storage = container "Temporary S3 Storage"
-                }
+                    tempMetadaStore = container "Temporary Metadata Store" "Temporarily stores contents' metadata and information about content uploading" "Redis" "Database"
+                    tempS3storage = container "Temporary S3 Storage" "Temporarily stores uploaded content" "Minio"
+                    // generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
 
-                group "Permanent S3 Service" {
-                    permS3Api = container "Permanent S3 API" "" "" "Hexagon"
-                    permS3storage = container "Permanent S3 Storage"
-                }
+                    group "Permanent S3 Service" {
+                        permS3Api = container "Permanent S3 API" "Consumes messages to store content" "ASP.NET Core" "Hexagon"
+                        permS3storage = container "Permanent S3 Storage" "Permanently stores content" "Minio"
+                    }
 
-                group "Multimedia Service" {
-                    multimediaApi = container "Multimedia API" "" "" "Hexagon"
-                    multimediaDb = container "Multimedia Database" "" "" "Database"
+                    group "Multimedia Service" {
+                        multimediaApi = container "Multimedia API" "Consumes messages to process multimedia" "ASP.NET Core" "Hexagon"
+                        multimediaDb = container "Multimedia Database" "Stores logs" "PostgreSQL" "Database"
+                    }
                 }
-
             }
         }
         
 
         email = softwareSystem "E-mail System" "External e-mail system (Google)" "External"
-        yandexMaps = softwareSystem "Yandex Maps" "" "External"
+        yandexMaps = softwareSystem "Yandex Maps" "Shows near cinemas" "External"
 
 
         user -> netflixSystem.webApplication "Uses, watches, buys subscription, gets support from staff"
         user -> supportStaff "Chats for support"
         supportStaff -> netflixSystem.webApplication "Uses to chat with user"
         admin -> netflixSystem.webApplication "Uses to CRUD content and subscriptions"
+        moderator -> netflixSystem.webApplication "Uses to moderate reviews"
 
         netflixSystem.webApplication -> netflixSystem.singlePageApplication "Delivers to customer's web browser"
 
@@ -108,21 +113,21 @@ workspace {
         netflixSystem.generalApi -> netflixSystem.identityDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi -> netflixSystem.cache "Reads and writes to" "TCP"
         netflixSystem.generalApi -> email "Sends e-mails using" "SMTP"
-        netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Sends metadata" 
+        netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Reads and writes to" "RESP/TCP"
 
-        netflixSystem.generalApi -> netflixSystem.generalBroker "Sends message to handle multimedia" "AMQP"
-        netflixSystem.generalBroker -> netflixSystem.multimediaApi "Sends message to handle multimedia" "AMQP"
+        netflixSystem.generalApi -> netflixSystem.multimediaApi "Sends message via broker to handle multimedia" "AMQP"
+        // netflixSystem.generalBroker -> netflixSystem.multimediaApi "Sends message to handle multimedia" "AMQP"
         netflixSystem.multimediaApi -> netflixSystem.multimediaDb "Reads and writes to" "SQL/TCP (EF Core)"
-        netflixSystem.multimediaApi -> netflixSystem.generalBroker "Sends message to save file in permanent storage" "AMQP"
-        netflixSystem.multimediaApi -> netflixSystem.tempS3storage "Reads"
+        netflixSystem.multimediaApi -> netflixSystem.permS3Api "Sends message via broker to save file in permanent storage" "AMQP"
+        netflixSystem.multimediaApi -> netflixSystem.tempS3storage "Reads and writes to" "S3/TCP"
 
         // netflixSystem.multimediaApi -> netflixSystem.generalBroker "Sends message to save file" "AMQP"
         // netflixSystem.generalApi -> netflixSystem.tempS3Api "Sends request to save file" "HTTP"
-        netflixSystem.generalApi -> netflixSystem.tempS3storage "Reads and writes to" "TCP" 
+        netflixSystem.generalApi -> netflixSystem.tempS3storage "Reads and writes to" "S3/TCP" 
 
-        netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP"
-        netflixSystem.permS3Api -> netflixSystem.generalBroker "Sends message about successful upload" "AMQP"
-        netflixSystem.permS3Api -> netflixSystem.permS3storage "Reads and writes to" "TCP" 
+        // netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP" 
+        netflixSystem.permS3Api -> netflixSystem.generalApi "Sends message via broker about successful upload" "AMQP"
+        netflixSystem.permS3Api -> netflixSystem.permS3storage "Reads and writes to" "S3/TCP" 
         
         netflixSystem.singlePageApplication -> netflixSystem.generalApi.contentController "Makes API calls to" "JSON/HTTPS"
         netflixSystem.singlePageApplication -> netflixSystem.generalApi.reviewController "Makes API calls to" "JSON/HTTPS"
