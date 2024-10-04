@@ -5,6 +5,11 @@ workspace {
     model {
         user = person "User"
 
+        group "External authentication providers" {
+                vkAuthProvider = softwareSystem "VK OAuth 2.0" "Provides authentication with VK" "External"
+                googleAuthProvider = softwareSystem "Google OAuth 2.0" "Provides authentication with Google" "External"
+        }
+
         group "Netflix" {
             supportStaff = person "Customer Service Staff"
             admin = person "Admin"
@@ -26,7 +31,36 @@ workspace {
                 }
 
                 group "General Service" {
-                    generalApi = container "General Service API" "" "" "Hexagon"
+                    generalApi = container "General Service API" "" "" "Hexagon" {
+                        contentController = component "Content controller" "Provides the user to watch content, get it's metadata, select to favourites and provides admin to CRUD operation over content" "ASP.NET Core Api Controllers"
+                        reviewController = component "Review controller" "Provides the user to rate content and get other reviews" "ASP.NET Core Api Controllers"
+                        commentController = component "Comment controller" "Provides the user to assign comment and get notifications about answer" "ASP.NET Core Api Controllers"
+                        authController = component "Authentication controller" "Provides user's authentication" "ASP.NET Core Api Controllers"
+                        
+                        notificationHub = component "Notification hub" "Allows the user to be notified instantly about comment and send notification to other" "SignalR Hub"
+                        
+                        reviewService = component "Review service" "Provides methods to interact with reviews, connected with rating content and handling reviews" "Service"
+                        favouriteService = component "Favourite service" "Provides methods to interact with favourite contents, like add to favourite and delete from favourite" "Service"
+                        contentService = component "Content service" "Provides methods to interact with contents, connected with handling contents file url, data and editing it metadata " "Service"
+                        commentService = component "Comment service" "Provides methods to interact with comments, connected with assigning and deleting comments" "Service"
+                        notificationService = component "Notification service" "Provides methods to interact with notifications, like getting user notifications" "Service"
+                        authService = component "Authentication service" "Provides methods to authenticate user" "Service"
+                        
+                        emailSender = component "Email sender" "Provides methods to send messages to mail for authentication" "Service"
+                        
+                        identityAuth = component "Authentication identity tools" "Provides methods related to database to authenticate user"
+                        
+                        authProviderResolver = component "Authentication Provider Resolver" "Provides methods to resolve needed authentication provider" "Factory"
+                        authProvider = component "Authentication Provider" "Provides methods to authenticate via external provider" "Service"
+                        
+                        contentRepository = component "Content repository" "Provides methods to interact with contents in database" "Repository"
+                        favouriteRepository = component "Favourite repository" "Provides methods to interact with favourite contents in database" "Repository"
+                        reviewRepository = component "Review repository" "Provides methods to interact with reviews in database" "Repository"
+                        userRepository = component "User repository" "Provides methods to interact with users in database" "Repository"
+                        commentRepository = component "Comment repository" "Provides methods to interact with comments in database" "Repository"
+                        commentNotificationRepository = component "Comment notification repository" "Provides methods to interact with notifications in database" "Repository"
+                        tokenRepository = component "Token repository" "Provides methods to interact with tokens in identity database" "Repository"
+                    }
                     generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
                     generalDb = container "General Database" "Stores reviews, contents' information, favourites, users" "PostgreSQL" "Database"
                     identityDb = container "Identity Database" "Stores data related to user's identity, auth" "PostgreSQL" "Database"
@@ -73,7 +107,7 @@ workspace {
         netflixSystem.generalApi -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi -> netflixSystem.identityDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi -> netflixSystem.cache "Reads and writes to" "TCP"
-        netflixSystem.generalApi -> email "Sends e-mails using"
+        netflixSystem.generalApi -> email "Sends e-mails using" "SMTP"
         netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Sends metadata" 
 
         netflixSystem.generalApi -> netflixSystem.generalBroker "Sends message to handle multimedia" "AMQP"
@@ -89,6 +123,62 @@ workspace {
         netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP"
         netflixSystem.permS3Api -> netflixSystem.generalBroker "Sends message about successful upload" "AMQP"
         netflixSystem.permS3Api -> netflixSystem.permS3storage "Reads and writes to" "TCP" 
+        
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.contentController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.reviewController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.commentController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.authController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.notificationHub "Makes remote procedure calls to" "SignalR/WebSockets"
+        
+        netflixSystem.generalApi.contentController -> netflixSystem.generalApi.contentService "Uses" "Interface"
+        netflixSystem.generalApi.contentController -> netflixSystem.generalApi.favouriteService "Uses" "Interface"
+        
+        netflixSystem.generalApi.reviewController -> netflixSystem.generalApi.reviewService "Uses" "Interface"
+        
+        netflixSystem.generalApi.commentController -> netflixSystem.generalApi.commentService "Uses" "Interface"
+        netflixSystem.generalApi.commentController -> netflixSystem.generalApi.notificationService "Uses" "Interface"
+        
+        netflixSystem.generalApi.authController -> netflixSystem.generalApi.authService "Uses" "Interface"
+        netflixSystem.generalApi.authController -> netflixSystem.generalApi.authProviderResolver "Uses" "Interface"
+        
+        netflixSystem.generalApi.notificationHub -> netflixSystem.generalApi.notificationService "Uses" "Interface"
+        
+        netflixSystem.generalApi.contentService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
+        netflixSystem.generalApi.contentService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
+        netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.favouriteRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.reviewService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.reviewService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
+        netflixSystem.generalApi.reviewService -> netflixSystem.generalApi.reviewRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.commentService -> netflixSystem.generalApi.commentRepository "Uses" "Interface"
+        netflixSystem.generalApi.commentService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.commentService -> netflixSystem.generalApi.reviewRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.notificationService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.notificationService -> netflixSystem.generalApi.commentNotificationRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.authService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.authService -> netflixSystem.generalApi.identityAuth "Uses" "Abstract"
+        netflixSystem.generalApi.authService -> netflixSystem.generalApi.tokenRepository "Uses" "Interface"
+        netflixSystem.generalApi.authService -> netflixSystem.generalApi.emailSender "Uses" "Interface"
+        
+        netflixSystem.generalApi.authProviderResolver -> netflixSystem.generalApi.authProvider "Uses" "Interface"
+        netflixSystem.generalApi.authProvider -> vkAuthProvider "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.generalApi.authProvider -> googleAuthProvider "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.generalApi.emailSender -> email "Sends e-mails using" "SMTP"
+        
+        netflixSystem.generalApi.userRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.contentRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.reviewRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.favouriteRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.commentRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.commentNotificationRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.tokenRepository -> netflixSystem.identityDb  "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.identityAuth -> netflixSystem.identityDb  "Reads and writes to" "SQL/TCP (EF Core)"
 
         email -> user "Sends e-mails to"
     }
@@ -109,6 +199,11 @@ workspace {
             include *
             autolayout tb
         }
+        
+        component netflixSystem.generalApi "ComponentContext" {
+            include *
+            autolayout tb
+        }
 
         styles {
             element "Element" {
@@ -122,6 +217,9 @@ workspace {
                 background #ba1e25
             }
             element "Container" {
+                background #d9232b
+            }
+            element "Component" {
                 background #d9232b
             }
             element "Database" {
