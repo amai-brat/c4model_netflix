@@ -34,9 +34,22 @@ workspace {
                 }
 
                 group "Support Service" {
-                    supportApi = container "Support Service API" "Provides functionality to chat with customer support staff" "ASP.NET Core" "Hexagon"
+                    supportApi = container "Support Service API" "Provides functionality to chat with customer support staff" "ASP.NET Core" "Hexagon" {
+                        supportHub = component "Support Hub" "Provides functionality of chat between user and support staff" "SignalR Hub"
+                        // ???
+                        // historyController = component "History Controller" "Provides messages history to user" 
+                        historyPublisher = component "History Publisher" "Publishes messages with chat history to broker"
+                        historyService = component "History Service" "Provides methods to interact with support chat history"
+                    }
                     supportBroker = container "Support Broker" "" "RabbitMQ" "Pipe"
-                    supportPersistentApi = container "Support Service Persistent API" "Consumes messages to save logs of support chat" "ASP.NET Core"
+                    supportPersistentApi = container "Support Service Persistent API" "Consumes messages to save logs of support chat" "ASP.NET Core" {
+                        historyConsumer = component "History Consumer" "Consumes messages to save logs of support chat"
+
+                        // REST для загрузки истории https://github.com/sOlnblshkO/HT.ITIS-3.1-student/blob/main/Dotnet.Homeworks.BigTask/3.1%20BigTask.md#%D1%8D%D1%82%D0%B0%D0%BF-2
+                        historyController = component "History Controller" "Provides support chat history" 
+                        historyService = component "History Service" "Provides methods to interact with support chat history"
+                        historyRepository = component "History Repository" "Provides methods to interact with support chat history from database"
+                    }
                     supportDb = container "Support Service Database" "Stores data related to users' communication with support staff" "PostgreSQL" "Database"
                 }
 
@@ -122,8 +135,8 @@ workspace {
         netflixSystem.singlePageApplication.components -> netflixSystem.singlePageApplication.store "Uses"
 
         netflixSystem.singlePageApplication.components -> netflixSystem.supportApi "Chatting with support staff" "SignalR"
-        netflixSystem.supportApi -> netflixSystem.supportBroker "Sends command to save messages" "AMQP"
-        netflixSystem.supportBroker -> netflixSystem.supportPersistentApi "Sends command to save messages" "AMQP"
+        netflixSystem.supportApi -> netflixSystem.supportBroker "Sends messages to save chat history" "AMQP"
+        netflixSystem.supportBroker -> netflixSystem.supportPersistentApi "Sends messages to save chat history" "AMQP"
         netflixSystem.supportPersistentApi -> netflixSystem.supportDb "Reads and writes to" "SQL/TCP (EF Core)"
 
         netflixSystem.singlePageApplication.components -> yandexMaps "Uses maps API"
@@ -228,6 +241,20 @@ workspace {
         netflixSystem.permS3Api.fileService -> netflixSystem.permS3Api.notificationPublisher "Uses"
         netflixSystem.permS3Api.notificationPublisher -> netflixSystem.generalBroker "Sends messages about file saving process"
 
+
+        netflixSystem.singlePageApplication -> netflixSystem.supportApi.supportHub "Chatting" "SignalR"
+        netflixSystem.supportApi.supportHub -> netflixSystem.supportApi.historyService "Uses"
+        netflixSystem.supportApi.historyService -> netflixSystem.supportApi.historyPublisher "Uses"
+        netflixSystem.supportApi.historyPublisher -> netflixSystem.supportBroker "Sends messages to save chat history" "AMQP"
+        netflixSystem.supportApi.historyService -> netflixSystem.supportPersistentApi.historyController "Gets history" "JSON/HTTPS"
+
+        netflixSystem.supportBroker -> netflixSystem.supportPersistentApi.historyConsumer "Consumes messages to save chat history" "AMQP"
+        netflixSystem.supportPersistentApi.historyConsumer -> netflixSystem.supportPersistentApi.historyService "Uses"
+        netflixSystem.supportPersistentApi.historyController -> netflixSystem.supportPersistentApi.historyService "Uses"
+        netflixSystem.supportPersistentApi.historyService -> netflixSystem.supportPersistentApi.historyRepository "Uses"
+        netflixSystem.supportPersistentApi.historyRepository -> netflixSystem.supportDb "Reads and writes to" "SQL/TCP (EF Core)"
+
+
         email -> user "Sends e-mails to"
     }
 
@@ -267,6 +294,16 @@ workspace {
         component netflixSystem.permS3Api "ComponentContext_Permanent_S3_API" {
             include *
             autolayout tb 
+        }
+
+        component netflixSystem.supportApi "ComponentContext_Support_API" {
+            include *
+            autolayout tb
+        }
+
+        component netflixSystem.supportPersistentApi "ComponentContext_Support_Persistent_API" {
+            include *
+            autolayout tb
         }
 
         styles {
