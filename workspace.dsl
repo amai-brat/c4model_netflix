@@ -79,7 +79,11 @@ workspace {
                     generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
 
                     group "Permanent S3 Service" {
-                        permS3Api = container "Permanent S3 API" "Consumes messages to store content" "ASP.NET Core" "Hexagon"
+                        permS3Api = container "Permanent S3 API" "Consumes messages to store content" "ASP.NET Core" "Hexagon" {
+                            fileConsumer = component "File Consumer" "Consumes messages to save files" 
+                            notificationPublisher = component "Notification Publisher" "Publishes message about saving process"
+                            fileService = component "File Service" "Saves files in storage"
+                        }
                         permS3storage = container "Permanent S3 Storage" "Permanently stores content" "Minio"
                     }
 
@@ -217,6 +221,13 @@ workspace {
         netflixSystem.multimediaApi.fileService -> netflixSystem.multimediaApi.logsRepository "Uses"
         netflixSystem.multimediaApi.logsRepository -> netflixSystem.multimediaDb "Reads and writes to" "SQL/TCP (EF Core)"
 
+
+        netflixSystem.generalBroker -> netflixSystem.permS3Api.fileConsumer "Sends messages to save file" "AMQP"
+        netflixSystem.permS3Api.fileConsumer -> netflixSystem.permS3Api.fileService "Uses"
+        netflixSystem.permS3Api.fileService -> netflixSystem.permS3storage "Reads and writes to" "S3/TCP"
+        netflixSystem.permS3Api.fileService -> netflixSystem.permS3Api.notificationPublisher "Uses"
+        netflixSystem.permS3Api.notificationPublisher -> netflixSystem.generalBroker "Sends messages about file saving process"
+
         email -> user "Sends e-mails to"
     }
 
@@ -251,6 +262,11 @@ workspace {
         component netflixSystem.multimediaApi "ComponentContext_Multimedia_API" {
             include *
             autolayout tb
+        }
+
+        component netflixSystem.permS3Api "ComponentContext_Permanent_S3_API" {
+            include *
+            autolayout tb 
         }
 
         styles {
