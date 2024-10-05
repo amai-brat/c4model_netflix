@@ -76,7 +76,7 @@ workspace {
                     cache = container "Cache" "Caches presigned URLs from S3 storage" "Redis" "Database"
                     tempMetadaStore = container "Temporary Metadata Store" "Temporarily stores contents' metadata and information about content uploading" "Redis" "Database"
                     tempS3storage = container "Temporary S3 Storage" "Temporarily stores uploaded content" "Minio"
-                    // generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
+                    generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
 
                     group "Permanent S3 Service" {
                         permS3Api = container "Permanent S3 API" "Consumes messages to store content" "ASP.NET Core" "Hexagon"
@@ -84,7 +84,16 @@ workspace {
                     }
 
                     group "Multimedia Service" {
-                        multimediaApi = container "Multimedia API" "Consumes messages to process multimedia" "ASP.NET Core" "Hexagon"
+                        multimediaApi = container "Multimedia API" "Consumes messages to process multimedia" "ASP.NET Core" "Hexagon" {
+                            fileConsumer = component "File Consumer" "Consumes messages to process files" 
+                            fileService = component "File Service" "Works with files"
+                            encoderFactory = component "Encoder Factory" "Provides encoder for specific file type"
+                            imageEncoder = component "Image Encoder" "Encodes images"
+                            movieEncoder = component "Movie Encoder" "Encodes movies"
+                            seriesEncoder = component "Series Encoder" "Encodes series"
+                            notificationPublisher = component "Notification Publisher" "Publishes message about encoding process"
+                            logsRepository = component "Logs Repository" "Provides methods to interact with logs in database"
+                        }
                         multimediaDb = container "Multimedia Database" "Stores logs" "PostgreSQL" "Database"
                     }
                 }
@@ -127,16 +136,16 @@ workspace {
         netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Reads and writes to" "RESP/TCP"
 
         netflixSystem.generalApi -> netflixSystem.multimediaApi "Sends message via broker to handle multimedia" "AMQP"
-        // netflixSystem.generalBroker -> netflixSystem.multimediaApi "Sends message to handle multimedia" "AMQP"
+            netflixSystem.generalBroker -> netflixSystem.multimediaApi "Sends message to handle multimedia" "AMQP"
+            netflixSystem.generalApi -> netflixSystem.generalBroker "Sends message to handle multimedia" "AMQP"
         netflixSystem.multimediaApi -> netflixSystem.multimediaDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.multimediaApi -> netflixSystem.permS3Api "Sends message via broker to save file in permanent storage" "AMQP"
+            netflixSystem.multimediaApi -> netflixSystem.generalBroker "Sends message to save file in permanent storage" "AMQP" 
         netflixSystem.multimediaApi -> netflixSystem.tempS3storage "Reads and writes to" "S3/TCP"
 
-        // netflixSystem.multimediaApi -> netflixSystem.generalBroker "Sends message to save file" "AMQP"
-        // netflixSystem.generalApi -> netflixSystem.tempS3Api "Sends request to save file" "HTTP"
         netflixSystem.generalApi -> netflixSystem.tempS3storage "Reads and writes to" "S3/TCP" 
 
-        // netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP" 
+        netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP" 
         netflixSystem.permS3Api -> netflixSystem.generalApi "Sends message via broker about successful upload" "AMQP"
         netflixSystem.permS3Api -> netflixSystem.permS3storage "Reads and writes to" "S3/TCP" 
         
@@ -196,6 +205,18 @@ workspace {
         netflixSystem.generalApi.tokenRepository -> netflixSystem.identityDb  "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi.identityAuth -> netflixSystem.identityDb  "Reads and writes to" "SQL/TCP (EF Core)"
 
+
+        netflixSystem.generalBroker -> netflixSystem.multimediaApi.fileConsumer "Sends message to handle multimedia" "AMQP"
+        netflixSystem.multimediaApi.fileConsumer -> netflixSystem.multimediaApi.fileService "Uses"
+        netflixSystem.multimediaApi.fileService -> netflixSystem.multimediaApi.encoderFactory "Uses"
+        netflixSystem.multimediaApi.fileService -> netflixSystem.multimediaApi.notificationPublisher "Uses"
+        netflixSystem.multimediaApi.notificationPublisher -> netflixSystem.generalBroker "Sends messages about file processing process"
+        netflixSystem.multimediaApi.encoderFactory -> netflixSystem.multimediaApi.imageEncoder "Uses"
+        netflixSystem.multimediaApi.encoderFactory -> netflixSystem.multimediaApi.movieEncoder "Uses"
+        netflixSystem.multimediaApi.encoderFactory -> netflixSystem.multimediaApi.seriesEncoder "Uses"
+        netflixSystem.multimediaApi.fileService -> netflixSystem.multimediaApi.logsRepository "Uses"
+        netflixSystem.multimediaApi.logsRepository -> netflixSystem.multimediaDb "Reads and writes to" "SQL/TCP (EF Core)"
+
         email -> user "Sends e-mails to"
     }
 
@@ -213,15 +234,21 @@ workspace {
 
         container netflixSystem "ContainerContext" {
             include *
+            exclude netflixSystem.generalBroker
             autolayout tb
         }
         
-        component netflixSystem.generalApi "ComponentContext" {
+        component netflixSystem.generalApi "ComponentContext_General_API" {
             include *
             autolayout tb
         }
 
         component netflixSystem.singlePageApplication "ComponentContext_SPA" {
+            include *
+            autolayout tb
+        }
+
+        component netflixSystem.multimediaApi "ComponentContext_Multimedia_API" {
             include *
             autolayout tb
         }
