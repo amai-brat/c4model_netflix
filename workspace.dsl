@@ -68,6 +68,8 @@ workspace {
                         commentService = component "Comment service" "Provides methods to interact with comments, connected with assigning and deleting comments" "Service"
                         notificationService = component "Notification service" "Provides methods to interact with notifications, like getting user notifications" "Service"
                         authService = component "Authentication service" "Provides methods to authenticate user" "Service"
+                        redisService = component "Redis Service" "Handles interaction with Cache" "Service"
+                        s3Service = component "S3 Service" "Handles interaction with S3 storage" "Service"
                         
                         emailSender = component "Email sender" "Provides methods to send messages to mail for authentication" "Service"
                         
@@ -127,7 +129,7 @@ workspace {
         supportStaff -> netflixSystem.webApplication "Uses to chat with user"
         admin -> netflixSystem.webApplication "Uses to CRUD content and subscriptions"
         moderator -> netflixSystem.webApplication "Uses to moderate reviews"
-
+        
         netflixSystem.webApplication -> netflixSystem.singlePageApplication "Delivers to customer's web browser"
 
         netflixSystem.singlePageApplication.components -> netflixSystem.singlePageApplication.services "Uses"
@@ -187,6 +189,16 @@ workspace {
         
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.contentService -> netflixSystem.tempS3storage "Writes processed multimedia to" "S3/TCP"
+        netflixSystem.generalApi.contentService -> netflixSystem.cache "Saves metadata and increments value" "TCP"
+        netflixSystem.generalApi.contentService -> netflixSystem.subscriptionApi "Gets subscriptions" "JSON/HTTPS"
+        netflixSystem.generalApi.contentService -> netflixSystem.permS3storage "Reads multimedia" "S3/TCP"
+        netflixSystem.generalApi.contentService -> netflixSystem.generalApi.redisService "Uses for caching metadata and incrementing values"
+        netflixSystem.generalApi.contentService -> netflixSystem.generalApi.s3Service "Uses for reading and writing multimedia"
+
+        netflixSystem.generalApi.redisService -> netflixSystem.cache "Reads and writes to" "TCP"
+        netflixSystem.generalApi.s3Service -> netflixSystem.tempS3storage "Writes to" "S3/TCP"
+        netflixSystem.generalApi.s3Service -> netflixSystem.permS3storage "Reads from" "S3/TCP"
         
         netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
         netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
@@ -253,7 +265,6 @@ workspace {
         netflixSystem.supportPersistentApi.historyController -> netflixSystem.supportPersistentApi.historyService "Uses"
         netflixSystem.supportPersistentApi.historyService -> netflixSystem.supportPersistentApi.historyRepository "Uses"
         netflixSystem.supportPersistentApi.historyRepository -> netflixSystem.supportDb "Reads and writes to" "SQL/TCP (EF Core)"
-
 
         email -> user "Sends e-mails to"
     }
