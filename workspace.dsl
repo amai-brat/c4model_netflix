@@ -189,7 +189,6 @@ workspace {
         
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
-        netflixSystem.generalApi.contentService -> netflixSystem.cache "Saves metadata and increments value" "TCP"
         netflixSystem.generalApi.contentService -> netflixSystem.subscriptionApi "Gets subscriptions" "JSON/HTTPS"
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.redisService "Uses for caching metadata and incrementing values"
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.s3Service "Uses for reading and writing multimedia"
