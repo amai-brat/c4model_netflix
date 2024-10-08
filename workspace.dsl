@@ -84,6 +84,10 @@ workspace {
                         commentNotificationRepository = component "Comment notification repository" "Provides methods to interact with notifications in database" "Repository"
                         tokenRepository = component "Token repository" "Provides methods to interact with tokens in identity database" "Repository"
                     }
+<<<<<<< HEAD
+=======
+                    generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
+>>>>>>> master
                     generalDb = container "General Database" "Stores reviews, contents' information, favourites, users" "PostgreSQL" "Database"
                     identityDb = container "Identity Database" "Stores data related to user's identity, auth" "PostgreSQL" "Database"
                     cache = container "Cache" "Caches presigned URLs from S3 storage" "Redis" "Database"
@@ -150,7 +154,11 @@ workspace {
         netflixSystem.generalApi -> netflixSystem.identityDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi -> netflixSystem.cache "Reads and writes to" "TCP"
         netflixSystem.generalApi -> email "Sends e-mails using" "SMTP"
+<<<<<<< HEAD
         netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Reads and writes to" "RESP/TCP"
+=======
+        netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Sends metadata" 
+>>>>>>> master
 
         netflixSystem.generalApi -> netflixSystem.multimediaApi "Sends message via broker to handle multimedia" "AMQP"
             netflixSystem.generalBroker -> netflixSystem.multimediaApi "Sends message to handle multimedia" "AMQP"
@@ -254,6 +262,65 @@ workspace {
         netflixSystem.supportPersistentApi.historyService -> netflixSystem.supportPersistentApi.historyRepository "Uses"
         netflixSystem.supportPersistentApi.historyRepository -> netflixSystem.supportDb "Reads and writes to" "SQL/TCP (EF Core)"
 
+        netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP"
+        netflixSystem.permS3Api -> netflixSystem.generalBroker "Sends message about successful upload" "AMQP"
+        netflixSystem.permS3Api -> netflixSystem.permS3storage "Reads and writes to" "TCP" 
+        
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.contentController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.reviewController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.commentController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.authController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.generalApi.notificationHub "Makes remote procedure calls to" "SignalR/WebSockets"
+        
+        netflixSystem.generalApi.contentController -> netflixSystem.generalApi.contentService "Uses" "Interface"
+        netflixSystem.generalApi.contentController -> netflixSystem.generalApi.favouriteService "Uses" "Interface"
+        
+        netflixSystem.generalApi.reviewController -> netflixSystem.generalApi.reviewService "Uses" "Interface"
+        
+        netflixSystem.generalApi.commentController -> netflixSystem.generalApi.commentService "Uses" "Interface"
+        netflixSystem.generalApi.commentController -> netflixSystem.generalApi.notificationService "Uses" "Interface"
+        
+        netflixSystem.generalApi.authController -> netflixSystem.generalApi.authService "Uses" "Interface"
+        netflixSystem.generalApi.authController -> netflixSystem.generalApi.authProviderResolver "Uses" "Interface"
+        
+        netflixSystem.generalApi.notificationHub -> netflixSystem.generalApi.notificationService "Uses" "Interface"
+        
+        netflixSystem.generalApi.contentService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
+        netflixSystem.generalApi.contentService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
+        netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.favouriteRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.reviewService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.reviewService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
+        netflixSystem.generalApi.reviewService -> netflixSystem.generalApi.reviewRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.commentService -> netflixSystem.generalApi.commentRepository "Uses" "Interface"
+        netflixSystem.generalApi.commentService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.commentService -> netflixSystem.generalApi.reviewRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.notificationService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.notificationService -> netflixSystem.generalApi.commentNotificationRepository "Uses" "Interface"
+        
+        netflixSystem.generalApi.authService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.authService -> netflixSystem.generalApi.identityAuth "Uses" "Abstract"
+        netflixSystem.generalApi.authService -> netflixSystem.generalApi.tokenRepository "Uses" "Interface"
+        netflixSystem.generalApi.authService -> netflixSystem.generalApi.emailSender "Uses" "Interface"
+        
+        netflixSystem.generalApi.authProviderResolver -> netflixSystem.generalApi.authProvider "Uses" "Interface"
+        netflixSystem.generalApi.authProvider -> vkAuthProvider "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.generalApi.authProvider -> googleAuthProvider "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.generalApi.emailSender -> email "Sends e-mails using" "SMTP"
+        
+        netflixSystem.generalApi.userRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.contentRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.reviewRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.favouriteRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.commentRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.commentNotificationRepository -> netflixSystem.generalDb "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.tokenRepository -> netflixSystem.identityDb  "Reads and writes to" "SQL/TCP (EF Core)"
+        netflixSystem.generalApi.identityAuth -> netflixSystem.identityDb  "Reads and writes to" "SQL/TCP (EF Core)"
 
         email -> user "Sends e-mails to"
     }
@@ -302,6 +369,11 @@ workspace {
         }
 
         component netflixSystem.supportPersistentApi "ComponentContext_Support_Persistent_API" {
+            include *
+            autolayout tb
+        }
+        
+        component netflixSystem.generalApi "ComponentContext" {
             include *
             autolayout tb
         }

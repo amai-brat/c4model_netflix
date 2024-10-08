@@ -1,0 +1,1932 @@
+{
+  "configuration" : {
+    "scope" : "SoftwareSystem"
+  },
+  "description" : "Description",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedAgent" : "structurizr-ui",
+  "lastModifiedDate" : "2024-10-04T11:41:39Z",
+  "model" : {
+    "people" : [ {
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "User",
+      "properties" : {
+        "structurizr.dsl.identifier" : "user"
+      },
+      "relationships" : [ {
+        "description" : "Uses, watches, buys subscription, gets support from staff",
+        "destinationId" : "7",
+        "id" : "50",
+        "properties" : {
+          "structurizr.dsl.identifier" : "82780183-2b19-4c64-8afe-82bb0bae9646"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Uses, watches, buys subscription, gets support from staff",
+        "destinationId" : "6",
+        "id" : "51",
+        "linkedRelationshipId" : "50",
+        "sourceId" : "1"
+      }, {
+        "description" : "Chats for support",
+        "destinationId" : "4",
+        "id" : "52",
+        "properties" : {
+          "structurizr.dsl.identifier" : "48fb921d-848c-49b8-800c-2adf6a78e5fe"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "group" : "Netflix",
+      "id" : "4",
+      "location" : "Unspecified",
+      "name" : "Customer Service Staff",
+      "properties" : {
+        "structurizr.dsl.identifier" : "supportstaff"
+      },
+      "relationships" : [ {
+        "description" : "Uses to chat with user",
+        "destinationId" : "7",
+        "id" : "53",
+        "properties" : {
+          "structurizr.dsl.identifier" : "ac756ab7-fd44-4993-801f-a7598c379b58"
+        },
+        "sourceId" : "4",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Uses to chat with user",
+        "destinationId" : "6",
+        "id" : "54",
+        "linkedRelationshipId" : "53",
+        "sourceId" : "4"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "group" : "Netflix",
+      "id" : "5",
+      "location" : "Unspecified",
+      "name" : "Admin",
+      "properties" : {
+        "structurizr.dsl.identifier" : "admin"
+      },
+      "relationships" : [ {
+        "description" : "Uses to CRUD content and subscriptions",
+        "destinationId" : "7",
+        "id" : "55",
+        "properties" : {
+          "structurizr.dsl.identifier" : "1f246f32-e23f-41a4-b49f-416802eb0d2a"
+        },
+        "sourceId" : "5",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Uses to CRUD content and subscriptions",
+        "destinationId" : "6",
+        "id" : "56",
+        "linkedRelationshipId" : "55",
+        "sourceId" : "5"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "description" : "Provides authentication with VK",
+      "documentation" : { },
+      "group" : "External authentication providers",
+      "id" : "2",
+      "location" : "Unspecified",
+      "name" : "VK OAuth 2.0",
+      "properties" : {
+        "structurizr.dsl.identifier" : "vkauthprovider"
+      },
+      "tags" : "Element,Software System,External"
+    }, {
+      "description" : "Provides authentication with Google",
+      "documentation" : { },
+      "group" : "External authentication providers",
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "Google OAuth 2.0",
+      "properties" : {
+        "structurizr.dsl.identifier" : "googleauthprovider"
+      },
+      "tags" : "Element,Software System,External"
+    }, {
+      "containers" : [ {
+        "description" : "Reverse proxy",
+        "documentation" : { },
+        "id" : "7",
+        "name" : "Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.webapplication"
+        },
+        "relationships" : [ {
+          "description" : "Delivers to customer's web browser",
+          "destinationId" : "8",
+          "id" : "57",
+          "properties" : {
+            "structurizr.dsl.identifier" : "5890ce6d-926c-45af-9a4c-2cba70ba5842"
+          },
+          "sourceId" : "7",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Nginx"
+      }, {
+        "description" : "Provides functionality to customers via their web browser",
+        "documentation" : { },
+        "id" : "8",
+        "name" : "Single-Page Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.singlepageapplication"
+        },
+        "relationships" : [ {
+          "description" : "Chatting with support staff",
+          "destinationId" : "11",
+          "id" : "58",
+          "properties" : {
+            "structurizr.dsl.identifier" : "ae7c889b-5a57-4205-982c-23b6e754343e"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "SignalR"
+        }, {
+          "description" : "Uses maps API",
+          "destinationId" : "49",
+          "id" : "62",
+          "properties" : {
+            "structurizr.dsl.identifier" : "3a7b42fa-4323-4235-9cb1-178d84e2731e"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Manipulating with subscription",
+          "destinationId" : "9",
+          "id" : "64",
+          "properties" : {
+            "structurizr.dsl.identifier" : "6d2b4cbc-1957-42a5-ac62-e96325ff583d"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Auth, review writing, content delivering",
+          "destinationId" : "15",
+          "id" : "66",
+          "properties" : {
+            "structurizr.dsl.identifier" : "ddb2e747-3351-46ae-824c-8cd642939e64"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Makes API calls to",
+          "destinationId" : "16",
+          "id" : "82",
+          "properties" : {
+            "structurizr.dsl.identifier" : "a4464996-7a3c-4638-ad67-7b4eb517425d"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Makes API calls to",
+          "destinationId" : "17",
+          "id" : "83",
+          "properties" : {
+            "structurizr.dsl.identifier" : "73d66793-a41b-48dd-99eb-aa3f38ee16f4"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Makes API calls to",
+          "destinationId" : "18",
+          "id" : "84",
+          "properties" : {
+            "structurizr.dsl.identifier" : "9e49f727-7adb-4621-b5c9-ba8302a2353e"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Makes API calls to",
+          "destinationId" : "19",
+          "id" : "85",
+          "properties" : {
+            "structurizr.dsl.identifier" : "013ab445-4cff-4394-afbc-d5e2479d8e8b"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Makes remote procedure calls to",
+          "destinationId" : "20",
+          "id" : "86",
+          "properties" : {
+            "structurizr.dsl.identifier" : "ff33d888-92fe-4b51-b9e3-3ca0a4795db8"
+          },
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "SignalR/WebSockets"
+        } ],
+        "tags" : "Element,Container,Web Browser",
+        "technology" : "JavaScript, React, Vite"
+      }, {
+        "description" : "Provides functionality with subscription (buying, checking for bought ones) via JSON/HTTPS API",
+        "documentation" : { },
+        "group" : "Subscription Service",
+        "id" : "9",
+        "name" : "Subscription Service API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.subscriptionapi"
+        },
+        "relationships" : [ {
+          "description" : "Reads and writes to",
+          "destinationId" : "10",
+          "id" : "65",
+          "properties" : {
+            "structurizr.dsl.identifier" : "a5102db7-8c62-48a8-b12b-7005de5d45eb"
+          },
+          "sourceId" : "9",
+          "tags" : "Relationship",
+          "technology" : "SQL/TCP (TypeORM)"
+        } ],
+        "tags" : "Element,Container,Hexagon",
+        "technology" : "NestJS"
+      }, {
+        "description" : "Stores data about users' subscriptions",
+        "documentation" : { },
+        "group" : "Subscription Service",
+        "id" : "10",
+        "name" : "Subscription Service Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.subscriptiondb"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "documentation" : { },
+        "group" : "Support Service",
+        "id" : "11",
+        "name" : "Support Service API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.supportapi"
+        },
+        "relationships" : [ {
+          "description" : "Sends command to save messages",
+          "destinationId" : "12",
+          "id" : "59",
+          "properties" : {
+            "structurizr.dsl.identifier" : "7c8ad50e-3a2f-46bc-b839-7572801ff32a"
+          },
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        } ],
+        "tags" : "Element,Container,Hexagon"
+      }, {
+        "documentation" : { },
+        "group" : "Support Service",
+        "id" : "12",
+        "name" : "Support Broker",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.supportbroker"
+        },
+        "relationships" : [ {
+          "description" : "Sends command to save messages",
+          "destinationId" : "13",
+          "id" : "60",
+          "properties" : {
+            "structurizr.dsl.identifier" : "99342968-9e75-4066-a286-1e8b9988e5c7"
+          },
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        } ],
+        "tags" : "Element,Container,Pipe",
+        "technology" : "RabbitMQ"
+      }, {
+        "documentation" : { },
+        "group" : "Support Service",
+        "id" : "13",
+        "name" : "Support Service Persistent API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.supportpersistentapi"
+        },
+        "relationships" : [ {
+          "description" : "Reads and writes to",
+          "destinationId" : "14",
+          "id" : "61",
+          "properties" : {
+            "structurizr.dsl.identifier" : "db1cb18a-325d-4616-828c-650ccdff9015"
+          },
+          "sourceId" : "13",
+          "tags" : "Relationship",
+          "technology" : "SQL/TCP (EF Core)"
+        } ],
+        "tags" : "Element,Container"
+      }, {
+        "description" : "Stores data related to users' communication with support staff",
+        "documentation" : { },
+        "group" : "Support Service",
+        "id" : "14",
+        "name" : "Support Service Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.supportdb"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "components" : [ {
+          "description" : "Provides the user to watch content, get it's metadata, select to favourites and provides admin to CRUD operation over content",
+          "documentation" : { },
+          "id" : "16",
+          "name" : "Content controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.contentcontroller"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "23",
+            "id" : "87",
+            "properties" : {
+              "structurizr.dsl.identifier" : "4ad2e3ff-4090-4b74-8fe0-e2a4bd9f4be6"
+            },
+            "sourceId" : "16",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "22",
+            "id" : "88",
+            "properties" : {
+              "structurizr.dsl.identifier" : "f5c043c1-141d-4730-8293-83a61c7ada23"
+            },
+            "sourceId" : "16",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "ASP.NET Core Api Controllers"
+        }, {
+          "description" : "Provides the user to rate content and get other reviews",
+          "documentation" : { },
+          "id" : "17",
+          "name" : "Review controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.reviewcontroller"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "21",
+            "id" : "89",
+            "properties" : {
+              "structurizr.dsl.identifier" : "de2fe9ef-06d9-48b2-b716-7de924538222"
+            },
+            "sourceId" : "17",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "ASP.NET Core Api Controllers"
+        }, {
+          "description" : "Provides the user to assign comment and get notifications about answer",
+          "documentation" : { },
+          "id" : "18",
+          "name" : "Comment controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.commentcontroller"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "24",
+            "id" : "90",
+            "properties" : {
+              "structurizr.dsl.identifier" : "623201d1-daea-4f94-99f0-14a4b4c7556f"
+            },
+            "sourceId" : "18",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "25",
+            "id" : "91",
+            "properties" : {
+              "structurizr.dsl.identifier" : "cd235135-32b4-4b4f-a571-3f7916663f5b"
+            },
+            "sourceId" : "18",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "ASP.NET Core Api Controllers"
+        }, {
+          "description" : "Provides user's authentication",
+          "documentation" : { },
+          "id" : "19",
+          "name" : "Authentication controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.authcontroller"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "26",
+            "id" : "92",
+            "properties" : {
+              "structurizr.dsl.identifier" : "5e090f93-6123-44f4-828b-63e246e4f9fd"
+            },
+            "sourceId" : "19",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "29",
+            "id" : "93",
+            "properties" : {
+              "structurizr.dsl.identifier" : "aba2469c-5af3-4f96-abd6-32a6c2122f30"
+            },
+            "sourceId" : "19",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "ASP.NET Core Api Controllers"
+        }, {
+          "description" : "Allows the user to be notified instantly about comment and send notification to other",
+          "documentation" : { },
+          "id" : "20",
+          "name" : "Notification hub",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.notificationhub"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "25",
+            "id" : "94",
+            "properties" : {
+              "structurizr.dsl.identifier" : "0211e186-2550-4702-becb-cdeebaa00267"
+            },
+            "sourceId" : "20",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "SignalR Hub"
+        }, {
+          "description" : "Provides methods to interact with reviews, connected with rating content and handling reviews",
+          "documentation" : { },
+          "id" : "21",
+          "name" : "Review service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.reviewservice"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "34",
+            "id" : "100",
+            "properties" : {
+              "structurizr.dsl.identifier" : "4bda07ff-0b5f-40fe-a2d9-b5c9b64a37d4"
+            },
+            "sourceId" : "21",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "31",
+            "id" : "101",
+            "properties" : {
+              "structurizr.dsl.identifier" : "32034939-75e0-43cd-bc52-b330e1f139c6"
+            },
+            "sourceId" : "21",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "33",
+            "id" : "102",
+            "properties" : {
+              "structurizr.dsl.identifier" : "74aaab8b-5215-40b0-b7eb-ea67a192105a"
+            },
+            "sourceId" : "21",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Service"
+        }, {
+          "description" : "Provides methods to interact with favourite contents, like add to favourite and delete from favourite",
+          "documentation" : { },
+          "id" : "22",
+          "name" : "Favourite service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.favouriteservice"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "31",
+            "id" : "97",
+            "properties" : {
+              "structurizr.dsl.identifier" : "acc25a31-ae87-40fc-8735-156db31f8902"
+            },
+            "sourceId" : "22",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "34",
+            "id" : "98",
+            "properties" : {
+              "structurizr.dsl.identifier" : "2119d49a-57cb-403f-b507-b9353c29782f"
+            },
+            "sourceId" : "22",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "32",
+            "id" : "99",
+            "properties" : {
+              "structurizr.dsl.identifier" : "1111ee65-355d-4fe9-a84a-deac309befb4"
+            },
+            "sourceId" : "22",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Service"
+        }, {
+          "description" : "Provides methods to interact with contents, connected with handling contents file url, data and editing it metadata",
+          "documentation" : { },
+          "id" : "23",
+          "name" : "Content service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.contentservice"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "31",
+            "id" : "95",
+            "properties" : {
+              "structurizr.dsl.identifier" : "c19664da-d5fc-49d8-acdd-89a5a25b049d"
+            },
+            "sourceId" : "23",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "34",
+            "id" : "96",
+            "properties" : {
+              "structurizr.dsl.identifier" : "217155be-a148-4539-b646-e18dc4dde933"
+            },
+            "sourceId" : "23",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Service"
+        }, {
+          "description" : "Provides methods to interact with comments, connected with assigning and deleting comments",
+          "documentation" : { },
+          "id" : "24",
+          "name" : "Comment service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.commentservice"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "35",
+            "id" : "103",
+            "properties" : {
+              "structurizr.dsl.identifier" : "d86888fb-63f2-48b0-a420-78d12bf01d37"
+            },
+            "sourceId" : "24",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "34",
+            "id" : "104",
+            "properties" : {
+              "structurizr.dsl.identifier" : "bc601787-958a-4733-b07b-8ebca3eef8e9"
+            },
+            "sourceId" : "24",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "33",
+            "id" : "105",
+            "properties" : {
+              "structurizr.dsl.identifier" : "420640f8-e2c0-43ff-978b-3ecdc94db47d"
+            },
+            "sourceId" : "24",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Service"
+        }, {
+          "description" : "Provides methods to interact with notifications, like getting user notifications",
+          "documentation" : { },
+          "id" : "25",
+          "name" : "Notification service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.notificationservice"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "34",
+            "id" : "106",
+            "properties" : {
+              "structurizr.dsl.identifier" : "762e1fc8-c92c-4385-8c62-18eddee90c0b"
+            },
+            "sourceId" : "25",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "36",
+            "id" : "107",
+            "properties" : {
+              "structurizr.dsl.identifier" : "72616756-b76c-4eb4-b483-d3e652e3ae91"
+            },
+            "sourceId" : "25",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Service"
+        }, {
+          "description" : "Provides methods to authenticate user",
+          "documentation" : { },
+          "id" : "26",
+          "name" : "Authentication service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.authservice"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "34",
+            "id" : "108",
+            "properties" : {
+              "structurizr.dsl.identifier" : "b91650cd-b3b8-4268-ae7a-380fee59e1cd"
+            },
+            "sourceId" : "26",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "28",
+            "id" : "109",
+            "properties" : {
+              "structurizr.dsl.identifier" : "eb5a3cf2-721e-4d14-8712-d0d7166e5abf"
+            },
+            "sourceId" : "26",
+            "tags" : "Relationship",
+            "technology" : "Abstract"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "37",
+            "id" : "110",
+            "properties" : {
+              "structurizr.dsl.identifier" : "05b69ca8-dea6-4187-bf90-9f5d2dc5ad92"
+            },
+            "sourceId" : "26",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          }, {
+            "description" : "Uses",
+            "destinationId" : "27",
+            "id" : "111",
+            "properties" : {
+              "structurizr.dsl.identifier" : "a96896da-b859-4582-b489-33dbba8dcb71"
+            },
+            "sourceId" : "26",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Service"
+        }, {
+          "description" : "Provides methods to send messages to mail for authentication",
+          "documentation" : { },
+          "id" : "27",
+          "name" : "Email sender",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.emailsender"
+          },
+          "relationships" : [ {
+            "description" : "Sends e-mails using",
+            "destinationId" : "48",
+            "id" : "119",
+            "properties" : {
+              "structurizr.dsl.identifier" : "23aa4716-4e12-48de-b0a3-deb701b5192b"
+            },
+            "sourceId" : "27",
+            "tags" : "Relationship",
+            "technology" : "SMTP"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Service"
+        }, {
+          "description" : "Provides methods related to database to authenticate user",
+          "documentation" : { },
+          "id" : "28",
+          "name" : "Authentication identity tools",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.identityauth"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes to",
+            "destinationId" : "40",
+            "id" : "127",
+            "properties" : {
+              "structurizr.dsl.identifier" : "edd6a151-aa01-4dd6-bb0c-cbbf2b507299"
+            },
+            "sourceId" : "28",
+            "tags" : "Relationship",
+            "technology" : "SQL/TCP (EF Core)"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Provides methods to resolve needed authentication provider",
+          "documentation" : { },
+          "id" : "29",
+          "name" : "Authentication Provider Resolver",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.authproviderresolver"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "30",
+            "id" : "112",
+            "properties" : {
+              "structurizr.dsl.identifier" : "1ee59583-ec39-4283-82eb-e4c19a3513f1"
+            },
+            "sourceId" : "29",
+            "tags" : "Relationship",
+            "technology" : "Interface"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Factory"
+        }, {
+          "description" : "Provides methods to authenticate via external provider",
+          "documentation" : { },
+          "id" : "30",
+          "name" : "Authentication Provider",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.authprovider"
+          },
+          "relationships" : [ {
+            "description" : "Makes API calls to",
+            "destinationId" : "2",
+            "id" : "113",
+            "properties" : {
+              "structurizr.dsl.identifier" : "feec1106-962a-4a62-ac88-24f310efce61"
+            },
+            "sourceId" : "30",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTPS"
+          }, {
+            "description" : "Makes API calls to",
+            "destinationId" : "3",
+            "id" : "116",
+            "properties" : {
+              "structurizr.dsl.identifier" : "d31d0aea-f37e-43a6-8bb1-708a993ab797"
+            },
+            "sourceId" : "30",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTPS"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Service"
+        }, {
+          "description" : "Provides methods to interact with contents in database",
+          "documentation" : { },
+          "id" : "31",
+          "name" : "Content repository",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.contentrepository"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes to",
+            "destinationId" : "39",
+            "id" : "121",
+            "properties" : {
+              "structurizr.dsl.identifier" : "ce5e4690-f6c1-4434-971b-86b2e226472f"
+            },
+            "sourceId" : "31",
+            "tags" : "Relationship",
+            "technology" : "SQL/TCP (EF Core)"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Repository"
+        }, {
+          "description" : "Provides methods to interact with favourite contents in database",
+          "documentation" : { },
+          "id" : "32",
+          "name" : "Favourite repository",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.favouriterepository"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes to",
+            "destinationId" : "39",
+            "id" : "123",
+            "properties" : {
+              "structurizr.dsl.identifier" : "42d07b30-0fc8-447b-8d15-3ac003648910"
+            },
+            "sourceId" : "32",
+            "tags" : "Relationship",
+            "technology" : "SQL/TCP (EF Core)"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Repository"
+        }, {
+          "description" : "Provides methods to interact with reviews in database",
+          "documentation" : { },
+          "id" : "33",
+          "name" : "Review repository",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.reviewrepository"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes to",
+            "destinationId" : "39",
+            "id" : "122",
+            "properties" : {
+              "structurizr.dsl.identifier" : "69bab906-4471-4619-b3ff-22469b67cf30"
+            },
+            "sourceId" : "33",
+            "tags" : "Relationship",
+            "technology" : "SQL/TCP (EF Core)"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Repository"
+        }, {
+          "description" : "Provides methods to interact with users in database",
+          "documentation" : { },
+          "id" : "34",
+          "name" : "User repository",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.userrepository"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes to",
+            "destinationId" : "39",
+            "id" : "120",
+            "properties" : {
+              "structurizr.dsl.identifier" : "b00006a0-19ba-41d7-aa05-6691a115a668"
+            },
+            "sourceId" : "34",
+            "tags" : "Relationship",
+            "technology" : "SQL/TCP (EF Core)"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Repository"
+        }, {
+          "description" : "Provides methods to interact with comments in database",
+          "documentation" : { },
+          "id" : "35",
+          "name" : "Comment repository",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.commentrepository"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes to",
+            "destinationId" : "39",
+            "id" : "124",
+            "properties" : {
+              "structurizr.dsl.identifier" : "e0c396db-1b2c-4da0-8ebd-2a4fa8f58dbb"
+            },
+            "sourceId" : "35",
+            "tags" : "Relationship",
+            "technology" : "SQL/TCP (EF Core)"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Repository"
+        }, {
+          "description" : "Provides methods to interact with notifications in database",
+          "documentation" : { },
+          "id" : "36",
+          "name" : "Comment notification repository",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.commentnotificationrepository"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes to",
+            "destinationId" : "39",
+            "id" : "125",
+            "properties" : {
+              "structurizr.dsl.identifier" : "8b394f99-0046-4abf-9410-c680584135fe"
+            },
+            "sourceId" : "36",
+            "tags" : "Relationship",
+            "technology" : "SQL/TCP (EF Core)"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Repository"
+        }, {
+          "description" : "Provides methods to interact with tokens in identity database",
+          "documentation" : { },
+          "id" : "37",
+          "name" : "Token repository",
+          "properties" : {
+            "structurizr.dsl.identifier" : "netflixsystem.generalapi.tokenrepository"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes to",
+            "destinationId" : "40",
+            "id" : "126",
+            "properties" : {
+              "structurizr.dsl.identifier" : "5ebd247b-9fd6-4c02-9983-b74f6e709bb4"
+            },
+            "sourceId" : "37",
+            "tags" : "Relationship",
+            "technology" : "SQL/TCP (EF Core)"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Repository"
+        } ],
+        "documentation" : { },
+        "group" : "General Service",
+        "id" : "15",
+        "name" : "General Service API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.generalapi"
+        },
+        "relationships" : [ {
+          "description" : "Reads and writes to",
+          "destinationId" : "39",
+          "id" : "67",
+          "properties" : {
+            "structurizr.dsl.identifier" : "ee1b76ce-1f0e-42fa-8676-bd54b15a2841"
+          },
+          "sourceId" : "15",
+          "tags" : "Relationship",
+          "technology" : "SQL/TCP (EF Core)"
+        }, {
+          "description" : "Reads and writes to",
+          "destinationId" : "40",
+          "id" : "68",
+          "properties" : {
+            "structurizr.dsl.identifier" : "e6f56d0d-0371-4f1d-a923-67a5e280b852"
+          },
+          "sourceId" : "15",
+          "tags" : "Relationship",
+          "technology" : "SQL/TCP (EF Core)"
+        }, {
+          "description" : "Reads and writes to",
+          "destinationId" : "41",
+          "id" : "69",
+          "properties" : {
+            "structurizr.dsl.identifier" : "6ab181fe-16c4-4420-a264-091ee61979aa"
+          },
+          "sourceId" : "15",
+          "tags" : "Relationship",
+          "technology" : "TCP"
+        }, {
+          "description" : "Sends e-mails using",
+          "destinationId" : "48",
+          "id" : "70",
+          "properties" : {
+            "structurizr.dsl.identifier" : "24d00514-3c03-47c7-acf0-76e181f3468e"
+          },
+          "sourceId" : "15",
+          "tags" : "Relationship",
+          "technology" : "SMTP"
+        }, {
+          "description" : "Sends metadata",
+          "destinationId" : "42",
+          "id" : "72",
+          "properties" : {
+            "structurizr.dsl.identifier" : "076d62f4-d117-40cb-9936-b438a59f74df"
+          },
+          "sourceId" : "15",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Sends message to handle multimedia",
+          "destinationId" : "38",
+          "id" : "73",
+          "properties" : {
+            "structurizr.dsl.identifier" : "69a23135-29df-4366-add4-05d3f56f698f"
+          },
+          "sourceId" : "15",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        }, {
+          "description" : "Reads and writes to",
+          "destinationId" : "43",
+          "id" : "78",
+          "properties" : {
+            "structurizr.dsl.identifier" : "df177b9d-b2b2-47f2-874c-4025920c13d8"
+          },
+          "sourceId" : "15",
+          "tags" : "Relationship",
+          "technology" : "TCP"
+        }, {
+          "description" : "Makes API calls to",
+          "destinationId" : "2",
+          "id" : "114",
+          "linkedRelationshipId" : "113",
+          "sourceId" : "15",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Makes API calls to",
+          "destinationId" : "3",
+          "id" : "117",
+          "linkedRelationshipId" : "116",
+          "sourceId" : "15",
+          "technology" : "JSON/HTTPS"
+        } ],
+        "tags" : "Element,Container,Hexagon"
+      }, {
+        "documentation" : { },
+        "group" : "General Service",
+        "id" : "38",
+        "name" : "General Broker",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.generalbroker"
+        },
+        "relationships" : [ {
+          "description" : "Sends message to handle multimedia",
+          "destinationId" : "46",
+          "id" : "74",
+          "properties" : {
+            "structurizr.dsl.identifier" : "d8ea8a69-b40d-437e-af29-67121a90cbcd"
+          },
+          "sourceId" : "38",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        }, {
+          "description" : "Sends message to save file in permanent storage",
+          "destinationId" : "44",
+          "id" : "79",
+          "properties" : {
+            "structurizr.dsl.identifier" : "dd651dd4-8abb-4b3d-aaf6-bdddf2177dd5"
+          },
+          "sourceId" : "38",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        } ],
+        "tags" : "Element,Container,Pipe",
+        "technology" : "RabbitMQ"
+      }, {
+        "description" : "Stores reviews, contents' information, favourites, users",
+        "documentation" : { },
+        "group" : "General Service",
+        "id" : "39",
+        "name" : "General Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.generaldb"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Stores data related to user's identity, auth",
+        "documentation" : { },
+        "group" : "General Service",
+        "id" : "40",
+        "name" : "Identity Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.identitydb"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Caches presigned URLs from S3 storage",
+        "documentation" : { },
+        "group" : "General Service",
+        "id" : "41",
+        "name" : "Cache",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.cache"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "Redis"
+      }, {
+        "documentation" : { },
+        "group" : "General Service",
+        "id" : "42",
+        "name" : "Temporary Metadata Store",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.tempmetadastore"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "Redis"
+      }, {
+        "documentation" : { },
+        "group" : "General Service",
+        "id" : "43",
+        "name" : "Temporary S3 Storage",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.temps3storage"
+        },
+        "tags" : "Element,Container"
+      }, {
+        "documentation" : { },
+        "group" : "Permanent S3 Service",
+        "id" : "44",
+        "name" : "Permanent S3 API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.perms3api"
+        },
+        "relationships" : [ {
+          "description" : "Sends message about successful upload",
+          "destinationId" : "38",
+          "id" : "80",
+          "properties" : {
+            "structurizr.dsl.identifier" : "83e8ebc2-d93e-496e-930d-8fca601ad282"
+          },
+          "sourceId" : "44",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        }, {
+          "description" : "Reads and writes to",
+          "destinationId" : "45",
+          "id" : "81",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fac707a0-8579-4cc3-bc01-477778a3f2fe"
+          },
+          "sourceId" : "44",
+          "tags" : "Relationship",
+          "technology" : "TCP"
+        } ],
+        "tags" : "Element,Container,Hexagon"
+      }, {
+        "documentation" : { },
+        "group" : "Permanent S3 Service",
+        "id" : "45",
+        "name" : "Permanent S3 Storage",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.perms3storage"
+        },
+        "tags" : "Element,Container"
+      }, {
+        "documentation" : { },
+        "group" : "Multimedia Service",
+        "id" : "46",
+        "name" : "Multimedia API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.multimediaapi"
+        },
+        "relationships" : [ {
+          "description" : "Reads and writes to",
+          "destinationId" : "47",
+          "id" : "75",
+          "properties" : {
+            "structurizr.dsl.identifier" : "a13e0a7a-4590-4d5b-bc85-8cbbe9d10471"
+          },
+          "sourceId" : "46",
+          "tags" : "Relationship",
+          "technology" : "SQL/TCP (EF Core)"
+        }, {
+          "description" : "Sends message to save file in permanent storage",
+          "destinationId" : "38",
+          "id" : "76",
+          "properties" : {
+            "structurizr.dsl.identifier" : "ecc95aed-5421-4cbe-947d-5fdc6b690389"
+          },
+          "sourceId" : "46",
+          "tags" : "Relationship",
+          "technology" : "AMQP"
+        }, {
+          "description" : "Reads",
+          "destinationId" : "43",
+          "id" : "77",
+          "properties" : {
+            "structurizr.dsl.identifier" : "8af44111-44d9-4cdd-a868-f957a69598b7"
+          },
+          "sourceId" : "46",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Hexagon"
+      }, {
+        "documentation" : { },
+        "group" : "Multimedia Service",
+        "id" : "47",
+        "name" : "Multimedia Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "netflixsystem.multimediadb"
+        },
+        "tags" : "Element,Container,Database"
+      } ],
+      "description" : "Allows users to buy subscription, view lists of contents, give a review, watch",
+      "documentation" : { },
+      "group" : "Netflix",
+      "id" : "6",
+      "location" : "Unspecified",
+      "name" : "Netflix System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "netflixsystem"
+      },
+      "relationships" : [ {
+        "description" : "Uses maps API",
+        "destinationId" : "49",
+        "id" : "63",
+        "linkedRelationshipId" : "62",
+        "sourceId" : "6"
+      }, {
+        "description" : "Sends e-mails using",
+        "destinationId" : "48",
+        "id" : "71",
+        "linkedRelationshipId" : "70",
+        "sourceId" : "6",
+        "technology" : "SMTP"
+      }, {
+        "description" : "Makes API calls to",
+        "destinationId" : "2",
+        "id" : "115",
+        "linkedRelationshipId" : "113",
+        "sourceId" : "6",
+        "technology" : "JSON/HTTPS"
+      }, {
+        "description" : "Makes API calls to",
+        "destinationId" : "3",
+        "id" : "118",
+        "linkedRelationshipId" : "116",
+        "sourceId" : "6",
+        "technology" : "JSON/HTTPS"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "External e-mail system (Google)",
+      "documentation" : { },
+      "id" : "48",
+      "location" : "Unspecified",
+      "name" : "E-mail System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "email"
+      },
+      "relationships" : [ {
+        "description" : "Sends e-mails to",
+        "destinationId" : "1",
+        "id" : "128",
+        "properties" : {
+          "structurizr.dsl.identifier" : "09d803f6-52b3-40a4-abb4-d4ae492affb9"
+        },
+        "sourceId" : "48",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Software System,External"
+    }, {
+      "documentation" : { },
+      "id" : "49",
+      "location" : "Unspecified",
+      "name" : "Yandex Maps",
+      "properties" : {
+        "structurizr.dsl.identifier" : "yandexmaps"
+      },
+      "tags" : "Element,Software System,External"
+    } ]
+  },
+  "name" : "Name",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICAhaWRlbnRpZmllcnMgaGllcmFyY2hpY2FsCgogICAgbW9kZWwgewogICAgICAgIHVzZXIgPSBwZXJzb24gIlVzZXIiCgogICAgICAgIGdyb3VwICJFeHRlcm5hbCBhdXRoZW50aWNhdGlvbiBwcm92aWRlcnMiIHsKICAgICAgICAgICAgICAgIHZrQXV0aFByb3ZpZGVyID0gc29mdHdhcmVTeXN0ZW0gIlZLIE9BdXRoIDIuMCIgIlByb3ZpZGVzIGF1dGhlbnRpY2F0aW9uIHdpdGggVksiICJFeHRlcm5hbCIKICAgICAgICAgICAgICAgIGdvb2dsZUF1dGhQcm92aWRlciA9IHNvZnR3YXJlU3lzdGVtICJHb29nbGUgT0F1dGggMi4wIiAiUHJvdmlkZXMgYXV0aGVudGljYXRpb24gd2l0aCBHb29nbGUiICJFeHRlcm5hbCIKICAgICAgICB9CgogICAgICAgIGdyb3VwICJOZXRmbGl4IiB7CiAgICAgICAgICAgIHN1cHBvcnRTdGFmZiA9IHBlcnNvbiAiQ3VzdG9tZXIgU2VydmljZSBTdGFmZiIKICAgICAgICAgICAgYWRtaW4gPSBwZXJzb24gIkFkbWluIgoKICAgICAgICAgICAgbmV0ZmxpeFN5c3RlbSA9IHNvZnR3YXJlU3lzdGVtICJOZXRmbGl4IFN5c3RlbSIgIkFsbG93cyB1c2VycyB0byBidXkgc3Vic2NyaXB0aW9uLCB2aWV3IGxpc3RzIG9mIGNvbnRlbnRzLCBnaXZlIGEgcmV2aWV3LCB3YXRjaCIgewogICAgICAgICAgICAgICAgd2ViQXBwbGljYXRpb24gPSBjb250YWluZXIgIldlYiBBcHBsaWNhdGlvbiIgIlJldmVyc2UgcHJveHkiICJOZ2lueCIKICAgICAgICAgICAgICAgIHNpbmdsZVBhZ2VBcHBsaWNhdGlvbiA9IGNvbnRhaW5lciAiU2luZ2xlLVBhZ2UgQXBwbGljYXRpb24iICJQcm92aWRlcyBmdW5jdGlvbmFsaXR5IHRvIGN1c3RvbWVycyB2aWEgdGhlaXIgd2ViIGJyb3dzZXIiICJKYXZhU2NyaXB0LCBSZWFjdCwgVml0ZSIgIldlYiBCcm93c2VyIgogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICBncm91cCAiU3Vic2NyaXB0aW9uIFNlcnZpY2UiIHsKICAgICAgICAgICAgICAgICAgICBzdWJzY3JpcHRpb25BcGkgPSBjb250YWluZXIgIlN1YnNjcmlwdGlvbiBTZXJ2aWNlIEFQSSIgIlByb3ZpZGVzIGZ1bmN0aW9uYWxpdHkgd2l0aCBzdWJzY3JpcHRpb24gKGJ1eWluZywgY2hlY2tpbmcgZm9yIGJvdWdodCBvbmVzKSB2aWEgSlNPTi9IVFRQUyBBUEkiICJOZXN0SlMiICJIZXhhZ29uIgogICAgICAgICAgICAgICAgICAgIHN1YnNjcmlwdGlvbkRiID0gY29udGFpbmVyICJTdWJzY3JpcHRpb24gU2VydmljZSBEYXRhYmFzZSIgIlN0b3JlcyBkYXRhIGFib3V0IHVzZXJzJyBzdWJzY3JpcHRpb25zIiAiUG9zdGdyZVNRTCIgIkRhdGFiYXNlIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGdyb3VwICJTdXBwb3J0IFNlcnZpY2UiIHsKICAgICAgICAgICAgICAgICAgICBzdXBwb3J0QXBpID0gY29udGFpbmVyICJTdXBwb3J0IFNlcnZpY2UgQVBJIiAiIiAiIiAiSGV4YWdvbiIKICAgICAgICAgICAgICAgICAgICBzdXBwb3J0QnJva2VyID0gY29udGFpbmVyICJTdXBwb3J0IEJyb2tlciIgIiIgIlJhYmJpdE1RIiAiUGlwZSIKICAgICAgICAgICAgICAgICAgICBzdXBwb3J0UGVyc2lzdGVudEFwaSA9IGNvbnRhaW5lciAiU3VwcG9ydCBTZXJ2aWNlIFBlcnNpc3RlbnQgQVBJIiAiIiAiIgogICAgICAgICAgICAgICAgICAgIHN1cHBvcnREYiA9IGNvbnRhaW5lciAiU3VwcG9ydCBTZXJ2aWNlIERhdGFiYXNlIiAiU3RvcmVzIGRhdGEgcmVsYXRlZCB0byB1c2VycycgY29tbXVuaWNhdGlvbiB3aXRoIHN1cHBvcnQgc3RhZmYiICJQb3N0Z3JlU1FMIiAiRGF0YWJhc2UiCiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgZ3JvdXAgIkdlbmVyYWwgU2VydmljZSIgewogICAgICAgICAgICAgICAgICAgIGdlbmVyYWxBcGkgPSBjb250YWluZXIgIkdlbmVyYWwgU2VydmljZSBBUEkiICIiICIiICJIZXhhZ29uIiB7CiAgICAgICAgICAgICAgICAgICAgICAgIGNvbnRlbnRDb250cm9sbGVyID0gY29tcG9uZW50ICJDb250ZW50IGNvbnRyb2xsZXIiICJQcm92aWRlcyB0aGUgdXNlciB0byB3YXRjaCBjb250ZW50LCBnZXQgaXQncyBtZXRhZGF0YSwgc2VsZWN0IHRvIGZhdm91cml0ZXMgYW5kIHByb3ZpZGVzIGFkbWluIHRvIENSVUQgb3BlcmF0aW9uIG92ZXIgY29udGVudCIgIkFTUC5ORVQgQ29yZSBBcGkgQ29udHJvbGxlcnMiCiAgICAgICAgICAgICAgICAgICAgICAgIHJldmlld0NvbnRyb2xsZXIgPSBjb21wb25lbnQgIlJldmlldyBjb250cm9sbGVyIiAiUHJvdmlkZXMgdGhlIHVzZXIgdG8gcmF0ZSBjb250ZW50IGFuZCBnZXQgb3RoZXIgcmV2aWV3cyIgIkFTUC5ORVQgQ29yZSBBcGkgQ29udHJvbGxlcnMiCiAgICAgICAgICAgICAgICAgICAgICAgIGNvbW1lbnRDb250cm9sbGVyID0gY29tcG9uZW50ICJDb21tZW50IGNvbnRyb2xsZXIiICJQcm92aWRlcyB0aGUgdXNlciB0byBhc3NpZ24gY29tbWVudCBhbmQgZ2V0IG5vdGlmaWNhdGlvbnMgYWJvdXQgYW5zd2VyIiAiQVNQLk5FVCBDb3JlIEFwaSBDb250cm9sbGVycyIKICAgICAgICAgICAgICAgICAgICAgICAgYXV0aENvbnRyb2xsZXIgPSBjb21wb25lbnQgIkF1dGhlbnRpY2F0aW9uIGNvbnRyb2xsZXIiICJQcm92aWRlcyB1c2VyJ3MgYXV0aGVudGljYXRpb24iICJBU1AuTkVUIENvcmUgQXBpIENvbnRyb2xsZXJzIgogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgbm90aWZpY2F0aW9uSHViID0gY29tcG9uZW50ICJOb3RpZmljYXRpb24gaHViIiAiQWxsb3dzIHRoZSB1c2VyIHRvIGJlIG5vdGlmaWVkIGluc3RhbnRseSBhYm91dCBjb21tZW50IGFuZCBzZW5kIG5vdGlmaWNhdGlvbiB0byBvdGhlciIgIlNpZ25hbFIgSHViIgogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgcmV2aWV3U2VydmljZSA9IGNvbXBvbmVudCAiUmV2aWV3IHNlcnZpY2UiICJQcm92aWRlcyBtZXRob2RzIHRvIGludGVyYWN0IHdpdGggcmV2aWV3cywgY29ubmVjdGVkIHdpdGggcmF0aW5nIGNvbnRlbnQgYW5kIGhhbmRsaW5nIHJldmlld3MiICJTZXJ2aWNlIgogICAgICAgICAgICAgICAgICAgICAgICBmYXZvdXJpdGVTZXJ2aWNlID0gY29tcG9uZW50ICJGYXZvdXJpdGUgc2VydmljZSIgIlByb3ZpZGVzIG1ldGhvZHMgdG8gaW50ZXJhY3Qgd2l0aCBmYXZvdXJpdGUgY29udGVudHMsIGxpa2UgYWRkIHRvIGZhdm91cml0ZSBhbmQgZGVsZXRlIGZyb20gZmF2b3VyaXRlIiAiU2VydmljZSIKICAgICAgICAgICAgICAgICAgICAgICAgY29udGVudFNlcnZpY2UgPSBjb21wb25lbnQgIkNvbnRlbnQgc2VydmljZSIgIlByb3ZpZGVzIG1ldGhvZHMgdG8gaW50ZXJhY3Qgd2l0aCBjb250ZW50cywgY29ubmVjdGVkIHdpdGggaGFuZGxpbmcgY29udGVudHMgZmlsZSB1cmwsIGRhdGEgYW5kIGVkaXRpbmcgaXQgbWV0YWRhdGEgIiAiU2VydmljZSIKICAgICAgICAgICAgICAgICAgICAgICAgY29tbWVudFNlcnZpY2UgPSBjb21wb25lbnQgIkNvbW1lbnQgc2VydmljZSIgIlByb3ZpZGVzIG1ldGhvZHMgdG8gaW50ZXJhY3Qgd2l0aCBjb21tZW50cywgY29ubmVjdGVkIHdpdGggYXNzaWduaW5nIGFuZCBkZWxldGluZyBjb21tZW50cyIgIlNlcnZpY2UiCiAgICAgICAgICAgICAgICAgICAgICAgIG5vdGlmaWNhdGlvblNlcnZpY2UgPSBjb21wb25lbnQgIk5vdGlmaWNhdGlvbiBzZXJ2aWNlIiAiUHJvdmlkZXMgbWV0aG9kcyB0byBpbnRlcmFjdCB3aXRoIG5vdGlmaWNhdGlvbnMsIGxpa2UgZ2V0dGluZyB1c2VyIG5vdGlmaWNhdGlvbnMiICJTZXJ2aWNlIgogICAgICAgICAgICAgICAgICAgICAgICBhdXRoU2VydmljZSA9IGNvbXBvbmVudCAiQXV0aGVudGljYXRpb24gc2VydmljZSIgIlByb3ZpZGVzIG1ldGhvZHMgdG8gYXV0aGVudGljYXRlIHVzZXIiICJTZXJ2aWNlIgogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgZW1haWxTZW5kZXIgPSBjb21wb25lbnQgIkVtYWlsIHNlbmRlciIgIlByb3ZpZGVzIG1ldGhvZHMgdG8gc2VuZCBtZXNzYWdlcyB0byBtYWlsIGZvciBhdXRoZW50aWNhdGlvbiIgIlNlcnZpY2UiCiAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICBpZGVudGl0eUF1dGggPSBjb21wb25lbnQgIkF1dGhlbnRpY2F0aW9uIGlkZW50aXR5IHRvb2xzIiAiUHJvdmlkZXMgbWV0aG9kcyByZWxhdGVkIHRvIGRhdGFiYXNlIHRvIGF1dGhlbnRpY2F0ZSB1c2VyIgogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgYXV0aFByb3ZpZGVyUmVzb2x2ZXIgPSBjb21wb25lbnQgIkF1dGhlbnRpY2F0aW9uIFByb3ZpZGVyIFJlc29sdmVyIiAiUHJvdmlkZXMgbWV0aG9kcyB0byByZXNvbHZlIG5lZWRlZCBhdXRoZW50aWNhdGlvbiBwcm92aWRlciIgIkZhY3RvcnkiCiAgICAgICAgICAgICAgICAgICAgICAgIGF1dGhQcm92aWRlciA9IGNvbXBvbmVudCAiQXV0aGVudGljYXRpb24gUHJvdmlkZXIiICJQcm92aWRlcyBtZXRob2RzIHRvIGF1dGhlbnRpY2F0ZSB2aWEgZXh0ZXJuYWwgcHJvdmlkZXIiICJTZXJ2aWNlIgogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgY29udGVudFJlcG9zaXRvcnkgPSBjb21wb25lbnQgIkNvbnRlbnQgcmVwb3NpdG9yeSIgIlByb3ZpZGVzIG1ldGhvZHMgdG8gaW50ZXJhY3Qgd2l0aCBjb250ZW50cyBpbiBkYXRhYmFzZSIgIlJlcG9zaXRvcnkiCiAgICAgICAgICAgICAgICAgICAgICAgIGZhdm91cml0ZVJlcG9zaXRvcnkgPSBjb21wb25lbnQgIkZhdm91cml0ZSByZXBvc2l0b3J5IiAiUHJvdmlkZXMgbWV0aG9kcyB0byBpbnRlcmFjdCB3aXRoIGZhdm91cml0ZSBjb250ZW50cyBpbiBkYXRhYmFzZSIgIlJlcG9zaXRvcnkiCiAgICAgICAgICAgICAgICAgICAgICAgIHJldmlld1JlcG9zaXRvcnkgPSBjb21wb25lbnQgIlJldmlldyByZXBvc2l0b3J5IiAiUHJvdmlkZXMgbWV0aG9kcyB0byBpbnRlcmFjdCB3aXRoIHJldmlld3MgaW4gZGF0YWJhc2UiICJSZXBvc2l0b3J5IgogICAgICAgICAgICAgICAgICAgICAgICB1c2VyUmVwb3NpdG9yeSA9IGNvbXBvbmVudCAiVXNlciByZXBvc2l0b3J5IiAiUHJvdmlkZXMgbWV0aG9kcyB0byBpbnRlcmFjdCB3aXRoIHVzZXJzIGluIGRhdGFiYXNlIiAiUmVwb3NpdG9yeSIKICAgICAgICAgICAgICAgICAgICAgICAgY29tbWVudFJlcG9zaXRvcnkgPSBjb21wb25lbnQgIkNvbW1lbnQgcmVwb3NpdG9yeSIgIlByb3ZpZGVzIG1ldGhvZHMgdG8gaW50ZXJhY3Qgd2l0aCBjb21tZW50cyBpbiBkYXRhYmFzZSIgIlJlcG9zaXRvcnkiCiAgICAgICAgICAgICAgICAgICAgICAgIGNvbW1lbnROb3RpZmljYXRpb25SZXBvc2l0b3J5ID0gY29tcG9uZW50ICJDb21tZW50IG5vdGlmaWNhdGlvbiByZXBvc2l0b3J5IiAiUHJvdmlkZXMgbWV0aG9kcyB0byBpbnRlcmFjdCB3aXRoIG5vdGlmaWNhdGlvbnMgaW4gZGF0YWJhc2UiICJSZXBvc2l0b3J5IgogICAgICAgICAgICAgICAgICAgICAgICB0b2tlblJlcG9zaXRvcnkgPSBjb21wb25lbnQgIlRva2VuIHJlcG9zaXRvcnkiICJQcm92aWRlcyBtZXRob2RzIHRvIGludGVyYWN0IHdpdGggdG9rZW5zIGluIGlkZW50aXR5IGRhdGFiYXNlIiAiUmVwb3NpdG9yeSIKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgZ2VuZXJhbEJyb2tlciA9IGNvbnRhaW5lciAiR2VuZXJhbCBCcm9rZXIiICIiICJSYWJiaXRNUSIgIlBpcGUiCiAgICAgICAgICAgICAgICAgICAgZ2VuZXJhbERiID0gY29udGFpbmVyICJHZW5lcmFsIERhdGFiYXNlIiAiU3RvcmVzIHJldmlld3MsIGNvbnRlbnRzJyBpbmZvcm1hdGlvbiwgZmF2b3VyaXRlcywgdXNlcnMiICJQb3N0Z3JlU1FMIiAiRGF0YWJhc2UiCiAgICAgICAgICAgICAgICAgICAgaWRlbnRpdHlEYiA9IGNvbnRhaW5lciAiSWRlbnRpdHkgRGF0YWJhc2UiICJTdG9yZXMgZGF0YSByZWxhdGVkIHRvIHVzZXIncyBpZGVudGl0eSwgYXV0aCIgIlBvc3RncmVTUUwiICJEYXRhYmFzZSIKICAgICAgICAgICAgICAgICAgICBjYWNoZSA9IGNvbnRhaW5lciAiQ2FjaGUiICJDYWNoZXMgcHJlc2lnbmVkIFVSTHMgZnJvbSBTMyBzdG9yYWdlIiAiUmVkaXMiICJEYXRhYmFzZSIKICAgICAgICAgICAgICAgICAgICB0ZW1wTWV0YWRhU3RvcmUgPSBjb250YWluZXIgIlRlbXBvcmFyeSBNZXRhZGF0YSBTdG9yZSIgIiIgIlJlZGlzIiAiRGF0YWJhc2UiCiAgICAgICAgICAgICAgICAgICAgdGVtcFMzc3RvcmFnZSA9IGNvbnRhaW5lciAiVGVtcG9yYXJ5IFMzIFN0b3JhZ2UiCiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgZ3JvdXAgIlBlcm1hbmVudCBTMyBTZXJ2aWNlIiB7CiAgICAgICAgICAgICAgICAgICAgcGVybVMzQXBpID0gY29udGFpbmVyICJQZXJtYW5lbnQgUzMgQVBJIiAiIiAiIiAiSGV4YWdvbiIKICAgICAgICAgICAgICAgICAgICBwZXJtUzNzdG9yYWdlID0gY29udGFpbmVyICJQZXJtYW5lbnQgUzMgU3RvcmFnZSIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBncm91cCAiTXVsdGltZWRpYSBTZXJ2aWNlIiB7CiAgICAgICAgICAgICAgICAgICAgbXVsdGltZWRpYUFwaSA9IGNvbnRhaW5lciAiTXVsdGltZWRpYSBBUEkiICIiICIiICJIZXhhZ29uIgogICAgICAgICAgICAgICAgICAgIG11bHRpbWVkaWFEYiA9IGNvbnRhaW5lciAiTXVsdGltZWRpYSBEYXRhYmFzZSIgIiIgIiIgIkRhdGFiYXNlIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgfQogICAgICAgIH0KICAgICAgICAKCiAgICAgICAgZW1haWwgPSBzb2Z0d2FyZVN5c3RlbSAiRS1tYWlsIFN5c3RlbSIgIkV4dGVybmFsIGUtbWFpbCBzeXN0ZW0gKEdvb2dsZSkiICJFeHRlcm5hbCIKICAgICAgICB5YW5kZXhNYXBzID0gc29mdHdhcmVTeXN0ZW0gIllhbmRleCBNYXBzIiAiIiAiRXh0ZXJuYWwiCgoKICAgICAgICB1c2VyIC0+IG5ldGZsaXhTeXN0ZW0ud2ViQXBwbGljYXRpb24gIlVzZXMsIHdhdGNoZXMsIGJ1eXMgc3Vic2NyaXB0aW9uLCBnZXRzIHN1cHBvcnQgZnJvbSBzdGFmZiIKICAgICAgICB1c2VyIC0+IHN1cHBvcnRTdGFmZiAiQ2hhdHMgZm9yIHN1cHBvcnQiCiAgICAgICAgc3VwcG9ydFN0YWZmIC0+IG5ldGZsaXhTeXN0ZW0ud2ViQXBwbGljYXRpb24gIlVzZXMgdG8gY2hhdCB3aXRoIHVzZXIiCiAgICAgICAgYWRtaW4gLT4gbmV0ZmxpeFN5c3RlbS53ZWJBcHBsaWNhdGlvbiAiVXNlcyB0byBDUlVEIGNvbnRlbnQgYW5kIHN1YnNjcmlwdGlvbnMiCgogICAgICAgIG5ldGZsaXhTeXN0ZW0ud2ViQXBwbGljYXRpb24gLT4gbmV0ZmxpeFN5c3RlbS5zaW5nbGVQYWdlQXBwbGljYXRpb24gIkRlbGl2ZXJzIHRvIGN1c3RvbWVyJ3Mgd2ViIGJyb3dzZXIiCgogICAgICAgIG5ldGZsaXhTeXN0ZW0uc2luZ2xlUGFnZUFwcGxpY2F0aW9uIC0+IG5ldGZsaXhTeXN0ZW0uc3VwcG9ydEFwaSAiQ2hhdHRpbmcgd2l0aCBzdXBwb3J0IHN0YWZmIiAiU2lnbmFsUiIKICAgICAgICBuZXRmbGl4U3lzdGVtLnN1cHBvcnRBcGkgLT4gbmV0ZmxpeFN5c3RlbS5zdXBwb3J0QnJva2VyICJTZW5kcyBjb21tYW5kIHRvIHNhdmUgbWVzc2FnZXMiICJBTVFQIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uc3VwcG9ydEJyb2tlciAtPiBuZXRmbGl4U3lzdGVtLnN1cHBvcnRQZXJzaXN0ZW50QXBpICJTZW5kcyBjb21tYW5kIHRvIHNhdmUgbWVzc2FnZXMiICJBTVFQIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uc3VwcG9ydFBlcnNpc3RlbnRBcGkgLT4gbmV0ZmxpeFN5c3RlbS5zdXBwb3J0RGIgIlJlYWRzIGFuZCB3cml0ZXMgdG8iICJTUUwvVENQIChFRiBDb3JlKSIKCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5zaW5nbGVQYWdlQXBwbGljYXRpb24gLT4geWFuZGV4TWFwcyAiVXNlcyBtYXBzIEFQSSIKICAgICAgICBuZXRmbGl4U3lzdGVtLnNpbmdsZVBhZ2VBcHBsaWNhdGlvbiAtPiBuZXRmbGl4U3lzdGVtLnN1YnNjcmlwdGlvbkFwaSAiTWFuaXB1bGF0aW5nIHdpdGggc3Vic2NyaXB0aW9uIiAiSlNPTi9IVFRQUyIKICAgICAgICBuZXRmbGl4U3lzdGVtLnN1YnNjcmlwdGlvbkFwaSAtPiBuZXRmbGl4U3lzdGVtLnN1YnNjcmlwdGlvbkRiICJSZWFkcyBhbmQgd3JpdGVzIHRvIiAiU1FML1RDUCAoVHlwZU9STSkiCgogICAgICAgIG5ldGZsaXhTeXN0ZW0uc2luZ2xlUGFnZUFwcGxpY2F0aW9uIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaSAiQXV0aCwgcmV2aWV3IHdyaXRpbmcsIGNvbnRlbnQgZGVsaXZlcmluZyIgIkpTT04vSFRUUFMiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbERiICJSZWFkcyBhbmQgd3JpdGVzIHRvIiAiU1FML1RDUCAoRUYgQ29yZSkiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpIC0+IG5ldGZsaXhTeXN0ZW0uaWRlbnRpdHlEYiAiUmVhZHMgYW5kIHdyaXRlcyB0byIgIlNRTC9UQ1AgKEVGIENvcmUpIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaSAtPiBuZXRmbGl4U3lzdGVtLmNhY2hlICJSZWFkcyBhbmQgd3JpdGVzIHRvIiAiVENQIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaSAtPiBlbWFpbCAiU2VuZHMgZS1tYWlscyB1c2luZyIgIlNNVFAiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpIC0+IG5ldGZsaXhTeXN0ZW0udGVtcE1ldGFkYVN0b3JlICJTZW5kcyBtZXRhZGF0YSIgCgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxCcm9rZXIgIlNlbmRzIG1lc3NhZ2UgdG8gaGFuZGxlIG11bHRpbWVkaWEiICJBTVFQIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEJyb2tlciAtPiBuZXRmbGl4U3lzdGVtLm11bHRpbWVkaWFBcGkgIlNlbmRzIG1lc3NhZ2UgdG8gaGFuZGxlIG11bHRpbWVkaWEiICJBTVFQIgogICAgICAgIG5ldGZsaXhTeXN0ZW0ubXVsdGltZWRpYUFwaSAtPiBuZXRmbGl4U3lzdGVtLm11bHRpbWVkaWFEYiAiUmVhZHMgYW5kIHdyaXRlcyB0byIgIlNRTC9UQ1AgKEVGIENvcmUpIgogICAgICAgIG5ldGZsaXhTeXN0ZW0ubXVsdGltZWRpYUFwaSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxCcm9rZXIgIlNlbmRzIG1lc3NhZ2UgdG8gc2F2ZSBmaWxlIGluIHBlcm1hbmVudCBzdG9yYWdlIiAiQU1RUCIKICAgICAgICBuZXRmbGl4U3lzdGVtLm11bHRpbWVkaWFBcGkgLT4gbmV0ZmxpeFN5c3RlbS50ZW1wUzNzdG9yYWdlICJSZWFkcyIKCiAgICAgICAgLy8gbmV0ZmxpeFN5c3RlbS5tdWx0aW1lZGlhQXBpIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEJyb2tlciAiU2VuZHMgbWVzc2FnZSB0byBzYXZlIGZpbGUiICJBTVFQIgogICAgICAgIC8vIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaSAtPiBuZXRmbGl4U3lzdGVtLnRlbXBTM0FwaSAiU2VuZHMgcmVxdWVzdCB0byBzYXZlIGZpbGUiICJIVFRQIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaSAtPiBuZXRmbGl4U3lzdGVtLnRlbXBTM3N0b3JhZ2UgIlJlYWRzIGFuZCB3cml0ZXMgdG8iICJUQ1AiIAoKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxCcm9rZXIgLT4gbmV0ZmxpeFN5c3RlbS5wZXJtUzNBcGkgIlNlbmRzIG1lc3NhZ2UgdG8gc2F2ZSBmaWxlIGluIHBlcm1hbmVudCBzdG9yYWdlIiAiQU1RUCIKICAgICAgICBuZXRmbGl4U3lzdGVtLnBlcm1TM0FwaSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxCcm9rZXIgIlNlbmRzIG1lc3NhZ2UgYWJvdXQgc3VjY2Vzc2Z1bCB1cGxvYWQiICJBTVFQIgogICAgICAgIG5ldGZsaXhTeXN0ZW0ucGVybVMzQXBpIC0+IG5ldGZsaXhTeXN0ZW0ucGVybVMzc3RvcmFnZSAiUmVhZHMgYW5kIHdyaXRlcyB0byIgIlRDUCIgCiAgICAgICAgCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5zaW5nbGVQYWdlQXBwbGljYXRpb24gLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmNvbnRlbnRDb250cm9sbGVyICJNYWtlcyBBUEkgY2FsbHMgdG8iICJKU09OL0hUVFBTIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uc2luZ2xlUGFnZUFwcGxpY2F0aW9uIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5yZXZpZXdDb250cm9sbGVyICJNYWtlcyBBUEkgY2FsbHMgdG8iICJKU09OL0hUVFBTIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uc2luZ2xlUGFnZUFwcGxpY2F0aW9uIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5jb21tZW50Q29udHJvbGxlciAiTWFrZXMgQVBJIGNhbGxzIHRvIiAiSlNPTi9IVFRQUyIKICAgICAgICBuZXRmbGl4U3lzdGVtLnNpbmdsZVBhZ2VBcHBsaWNhdGlvbiAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuYXV0aENvbnRyb2xsZXIgIk1ha2VzIEFQSSBjYWxscyB0byIgIkpTT04vSFRUUFMiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5zaW5nbGVQYWdlQXBwbGljYXRpb24gLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLm5vdGlmaWNhdGlvbkh1YiAiTWFrZXMgcmVtb3RlIHByb2NlZHVyZSBjYWxscyB0byIgIlNpZ25hbFIvV2ViU29ja2V0cyIKICAgICAgICAKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuY29udGVudENvbnRyb2xsZXIgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmNvbnRlbnRTZXJ2aWNlICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5jb250ZW50Q29udHJvbGxlciAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuZmF2b3VyaXRlU2VydmljZSAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICAKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkucmV2aWV3Q29udHJvbGxlciAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkucmV2aWV3U2VydmljZSAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICAKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuY29tbWVudENvbnRyb2xsZXIgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmNvbW1lbnRTZXJ2aWNlICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5jb21tZW50Q29udHJvbGxlciAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkubm90aWZpY2F0aW9uU2VydmljZSAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICAKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuYXV0aENvbnRyb2xsZXIgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmF1dGhTZXJ2aWNlICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5hdXRoQ29udHJvbGxlciAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuYXV0aFByb3ZpZGVyUmVzb2x2ZXIgIlVzZXMiICJJbnRlcmZhY2UiCiAgICAgICAgCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLm5vdGlmaWNhdGlvbkh1YiAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkubm90aWZpY2F0aW9uU2VydmljZSAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICAKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuY29udGVudFNlcnZpY2UgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmNvbnRlbnRSZXBvc2l0b3J5ICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5jb250ZW50U2VydmljZSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkudXNlclJlcG9zaXRvcnkgIlVzZXMiICJJbnRlcmZhY2UiCiAgICAgICAgCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmZhdm91cml0ZVNlcnZpY2UgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmNvbnRlbnRSZXBvc2l0b3J5ICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5mYXZvdXJpdGVTZXJ2aWNlIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS51c2VyUmVwb3NpdG9yeSAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuZmF2b3VyaXRlU2VydmljZSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuZmF2b3VyaXRlUmVwb3NpdG9yeSAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICAKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkucmV2aWV3U2VydmljZSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkudXNlclJlcG9zaXRvcnkgIlVzZXMiICJJbnRlcmZhY2UiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLnJldmlld1NlcnZpY2UgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmNvbnRlbnRSZXBvc2l0b3J5ICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5yZXZpZXdTZXJ2aWNlIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5yZXZpZXdSZXBvc2l0b3J5ICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIAogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5jb21tZW50U2VydmljZSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuY29tbWVudFJlcG9zaXRvcnkgIlVzZXMiICJJbnRlcmZhY2UiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmNvbW1lbnRTZXJ2aWNlIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS51c2VyUmVwb3NpdG9yeSAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuY29tbWVudFNlcnZpY2UgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLnJldmlld1JlcG9zaXRvcnkgIlVzZXMiICJJbnRlcmZhY2UiCiAgICAgICAgCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLm5vdGlmaWNhdGlvblNlcnZpY2UgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLnVzZXJSZXBvc2l0b3J5ICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5ub3RpZmljYXRpb25TZXJ2aWNlIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5jb21tZW50Tm90aWZpY2F0aW9uUmVwb3NpdG9yeSAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICAKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuYXV0aFNlcnZpY2UgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLnVzZXJSZXBvc2l0b3J5ICJVc2VzIiAiSW50ZXJmYWNlIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5hdXRoU2VydmljZSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuaWRlbnRpdHlBdXRoICJVc2VzIiAiQWJzdHJhY3QiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmF1dGhTZXJ2aWNlIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS50b2tlblJlcG9zaXRvcnkgIlVzZXMiICJJbnRlcmZhY2UiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmF1dGhTZXJ2aWNlIC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5lbWFpbFNlbmRlciAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICAKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuYXV0aFByb3ZpZGVyUmVzb2x2ZXIgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmF1dGhQcm92aWRlciAiVXNlcyIgIkludGVyZmFjZSIKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuYXV0aFByb3ZpZGVyIC0+IHZrQXV0aFByb3ZpZGVyICJNYWtlcyBBUEkgY2FsbHMgdG8iICJKU09OL0hUVFBTIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5hdXRoUHJvdmlkZXIgLT4gZ29vZ2xlQXV0aFByb3ZpZGVyICJNYWtlcyBBUEkgY2FsbHMgdG8iICJKU09OL0hUVFBTIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5lbWFpbFNlbmRlciAtPiBlbWFpbCAiU2VuZHMgZS1tYWlscyB1c2luZyIgIlNNVFAiCiAgICAgICAgCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLnVzZXJSZXBvc2l0b3J5IC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbERiICJSZWFkcyBhbmQgd3JpdGVzIHRvIiAiU1FML1RDUCAoRUYgQ29yZSkiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLmNvbnRlbnRSZXBvc2l0b3J5IC0+IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbERiICJSZWFkcyBhbmQgd3JpdGVzIHRvIiAiU1FML1RDUCAoRUYgQ29yZSkiCiAgICAgICAgbmV0ZmxpeFN5c3RlbS5nZW5lcmFsQXBpLnJldmlld1JlcG9zaXRvcnkgLT4gbmV0ZmxpeFN5c3RlbS5nZW5lcmFsRGIgIlJlYWRzIGFuZCB3cml0ZXMgdG8iICJTUUwvVENQIChFRiBDb3JlKSIKICAgICAgICBuZXRmbGl4U3lzdGVtLmdlbmVyYWxBcGkuZmF2b3VyaXRlUmVwb3NpdG9yeSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxEYiAiUmVhZHMgYW5kIHdyaXRlcyB0byIgIlNRTC9UQ1AgKEVGIENvcmUpIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5jb21tZW50UmVwb3NpdG9yeSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxEYiAiUmVhZHMgYW5kIHdyaXRlcyB0byIgIlNRTC9UQ1AgKEVGIENvcmUpIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5jb21tZW50Tm90aWZpY2F0aW9uUmVwb3NpdG9yeSAtPiBuZXRmbGl4U3lzdGVtLmdlbmVyYWxEYiAiUmVhZHMgYW5kIHdyaXRlcyB0byIgIlNRTC9UQ1AgKEVGIENvcmUpIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS50b2tlblJlcG9zaXRvcnkgLT4gbmV0ZmxpeFN5c3RlbS5pZGVudGl0eURiICAiUmVhZHMgYW5kIHdyaXRlcyB0byIgIlNRTC9UQ1AgKEVGIENvcmUpIgogICAgICAgIG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaS5pZGVudGl0eUF1dGggLT4gbmV0ZmxpeFN5c3RlbS5pZGVudGl0eURiICAiUmVhZHMgYW5kIHdyaXRlcyB0byIgIlNRTC9UQ1AgKEVGIENvcmUpIgoKICAgICAgICBlbWFpbCAtPiB1c2VyICJTZW5kcyBlLW1haWxzIHRvIgogICAgfQoKICAgIHZpZXdzIHsKICAgICAgICBzeXN0ZW1sYW5kc2NhcGUgIlN5c3RlbUxhbmRzY2FwZSIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgZXhjbHVkZSBlbWFpbAogICAgICAgICAgICBhdXRvTGF5b3V0IGxyCiAgICAgICAgfQoKICAgICAgICBzeXN0ZW1Db250ZXh0IG5ldGZsaXhTeXN0ZW0gIlN5c3RtQ29udGV4dCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCB0YgogICAgICAgIH0KCiAgICAgICAgY29udGFpbmVyIG5ldGZsaXhTeXN0ZW0gIkNvbnRhaW5lckNvbnRleHQiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9sYXlvdXQgdGIKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgY29tcG9uZW50IG5ldGZsaXhTeXN0ZW0uZ2VuZXJhbEFwaSAiQ29tcG9uZW50Q29udGV4dCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCB0YgogICAgICAgIH0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlBlcnNvbiIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjOWIxOTFmCiAgICAgICAgICAgICAgICBzaGFwZSBwZXJzb24KICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJTb2Z0d2FyZSBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgI2JhMWUyNQogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkNvbnRhaW5lciIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjZDkyMzJiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQ29tcG9uZW50IiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICNkOTIzMmIKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJEYXRhYmFzZSIgewogICAgICAgICAgICAgICAgc2hhcGUgY3lsaW5kZXIKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJXZWIgQnJvd3NlciIgewogICAgICAgICAgICAgICAgc2hhcGUgIldlYkJyb3dzZXIiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiSGV4YWdvbiIgewogICAgICAgICAgICAgICAgc2hhcGUgIkhleGFnb24iCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiRXh0ZXJuYWwiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIiM4ODg4ODgiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiUGlwZSIgewogICAgICAgICAgICAgICAgc2hhcGUgIlBpcGUiCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9CgogICAgY29uZmlndXJhdGlvbiB7CiAgICAgICAgc2NvcGUgc29mdHdhcmVzeXN0ZW0KICAgIH0KCn0="
+  },
+  "views" : {
+    "componentViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "15",
+      "dimensions" : {
+        "height" : 3100,
+        "width" : 8370
+      },
+      "elements" : [ {
+        "id" : "2",
+        "x" : 950,
+        "y" : 2599
+      }, {
+        "id" : "3",
+        "x" : 200,
+        "y" : 2599
+      }, {
+        "id" : "8",
+        "x" : 5450,
+        "y" : 199
+      }, {
+        "id" : "16",
+        "x" : 4700,
+        "y" : 799
+      }, {
+        "id" : "17",
+        "x" : 5450,
+        "y" : 799
+      }, {
+        "id" : "18",
+        "x" : 6950,
+        "y" : 799
+      }, {
+        "id" : "19",
+        "x" : 2825,
+        "y" : 799
+      }, {
+        "id" : "20",
+        "x" : 6200,
+        "y" : 799
+      }, {
+        "id" : "21",
+        "x" : 5450,
+        "y" : 1399
+      }, {
+        "id" : "22",
+        "x" : 3950,
+        "y" : 1399
+      }, {
+        "id" : "23",
+        "x" : 4700,
+        "y" : 1399
+      }, {
+        "id" : "24",
+        "x" : 6950,
+        "y" : 1399
+      }, {
+        "id" : "25",
+        "x" : 6200,
+        "y" : 1399
+      }, {
+        "id" : "26",
+        "x" : 2825,
+        "y" : 1399
+      }, {
+        "id" : "27",
+        "x" : 1700,
+        "y" : 1999
+      }, {
+        "id" : "28",
+        "x" : 3200,
+        "y" : 1999
+      }, {
+        "id" : "29",
+        "x" : 1325,
+        "y" : 1399
+      }, {
+        "id" : "30",
+        "x" : 950,
+        "y" : 1999
+      }, {
+        "id" : "31",
+        "x" : 4700,
+        "y" : 1999
+      }, {
+        "id" : "32",
+        "x" : 3950,
+        "y" : 1999
+      }, {
+        "id" : "33",
+        "x" : 6950,
+        "y" : 1999
+      }, {
+        "id" : "34",
+        "x" : 5450,
+        "y" : 1999
+      }, {
+        "id" : "35",
+        "x" : 7700,
+        "y" : 1999
+      }, {
+        "id" : "36",
+        "x" : 6200,
+        "y" : 1999
+      }, {
+        "id" : "37",
+        "x" : 2450,
+        "y" : 1999
+      }, {
+        "id" : "39",
+        "x" : 5825,
+        "y" : 2599
+      }, {
+        "id" : "40",
+        "x" : 2825,
+        "y" : 2599
+      }, {
+        "id" : "48",
+        "x" : 1700,
+        "y" : 2599
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "ComponentContext",
+      "order" : 4,
+      "relationships" : [ {
+        "id" : "100"
+      }, {
+        "id" : "101"
+      }, {
+        "id" : "102"
+      }, {
+        "id" : "103"
+      }, {
+        "id" : "104"
+      }, {
+        "id" : "105"
+      }, {
+        "id" : "106"
+      }, {
+        "id" : "107"
+      }, {
+        "id" : "108",
+        "vertices" : [ {
+          "x" : 5300,
+          "y" : 1999
+        } ]
+      }, {
+        "id" : "109"
+      }, {
+        "id" : "110"
+      }, {
+        "id" : "111"
+      }, {
+        "id" : "112"
+      }, {
+        "id" : "113"
+      }, {
+        "id" : "116"
+      }, {
+        "id" : "119"
+      }, {
+        "id" : "120"
+      }, {
+        "id" : "121",
+        "vertices" : [ {
+          "x" : 5300,
+          "y" : 2403
+        } ]
+      }, {
+        "id" : "122",
+        "vertices" : [ {
+          "x" : 6800,
+          "y" : 2403
+        } ]
+      }, {
+        "id" : "123",
+        "vertices" : [ {
+          "x" : 4550,
+          "y" : 2403
+        } ]
+      }, {
+        "id" : "124",
+        "vertices" : [ {
+          "x" : 7550,
+          "y" : 2403
+        } ]
+      }, {
+        "id" : "125"
+      }, {
+        "id" : "126"
+      }, {
+        "id" : "127"
+      }, {
+        "id" : "82"
+      }, {
+        "id" : "83"
+      }, {
+        "id" : "84",
+        "vertices" : [ {
+          "x" : 6800,
+          "y" : 695
+        } ]
+      }, {
+        "id" : "85"
+      }, {
+        "id" : "86"
+      }, {
+        "id" : "87"
+      }, {
+        "id" : "88"
+      }, {
+        "id" : "89"
+      }, {
+        "id" : "90"
+      }, {
+        "id" : "91"
+      }, {
+        "id" : "92"
+      }, {
+        "id" : "93"
+      }, {
+        "id" : "94"
+      }, {
+        "id" : "95"
+      }, {
+        "id" : "96"
+      }, {
+        "id" : "97"
+      }, {
+        "id" : "98"
+      }, {
+        "id" : "99"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "lastSavedView" : "ContainerContext",
+      "metadataSymbols" : "SquareBrackets",
+      "styles" : {
+        "elements" : [ {
+          "color" : "#ffffff",
+          "tag" : "Element"
+        }, {
+          "background" : "#9b191f",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#ba1e25",
+          "tag" : "Software System"
+        }, {
+          "background" : "#d9232b",
+          "tag" : "Container"
+        }, {
+          "background" : "#d9232b",
+          "tag" : "Component"
+        }, {
+          "shape" : "Cylinder",
+          "tag" : "Database"
+        }, {
+          "shape" : "WebBrowser",
+          "tag" : "Web Browser"
+        }, {
+          "shape" : "Hexagon",
+          "tag" : "Hexagon"
+        }, {
+          "background" : "#888888",
+          "tag" : "External"
+        }, {
+          "shape" : "Pipe",
+          "tag" : "Pipe"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "dimensions" : {
+        "height" : 5265,
+        "width" : 9163
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 633,
+        "y" : 799
+      }, {
+        "id" : "2",
+        "x" : 7762,
+        "y" : 3399
+      }, {
+        "id" : "3",
+        "x" : 8512,
+        "y" : 3399
+      }, {
+        "id" : "4",
+        "x" : 249,
+        "y" : 1499
+      }, {
+        "id" : "5",
+        "x" : 1333,
+        "y" : 799
+      }, {
+        "id" : "7",
+        "x" : 958,
+        "y" : 1549
+      }, {
+        "id" : "8",
+        "x" : 962,
+        "y" : 2199
+      }, {
+        "id" : "9",
+        "x" : 1724,
+        "y" : 2799
+      }, {
+        "id" : "10",
+        "x" : 1724,
+        "y" : 3399
+      }, {
+        "id" : "11",
+        "x" : 962,
+        "y" : 2799
+      }, {
+        "id" : "12",
+        "x" : 962,
+        "y" : 3399
+      }, {
+        "id" : "13",
+        "x" : 962,
+        "y" : 3999
+      }, {
+        "id" : "14",
+        "x" : 962,
+        "y" : 4599
+      }, {
+        "id" : "15",
+        "x" : 4362,
+        "y" : 2799
+      }, {
+        "id" : "38",
+        "x" : 6237,
+        "y" : 3399
+      }, {
+        "id" : "39",
+        "x" : 4737,
+        "y" : 3399
+      }, {
+        "id" : "40",
+        "x" : 2487,
+        "y" : 3399
+      }, {
+        "id" : "41",
+        "x" : 3237,
+        "y" : 3399
+      }, {
+        "id" : "42",
+        "x" : 3987,
+        "y" : 3399
+      }, {
+        "id" : "43",
+        "x" : 5487,
+        "y" : 3399
+      }, {
+        "id" : "44",
+        "x" : 6237,
+        "y" : 3999
+      }, {
+        "id" : "45",
+        "x" : 6237,
+        "y" : 4599
+      }, {
+        "id" : "46",
+        "x" : 6999,
+        "y" : 2799
+      }, {
+        "id" : "47",
+        "x" : 6999,
+        "y" : 3399
+      }, {
+        "id" : "48",
+        "x" : 1883,
+        "y" : 199
+      }, {
+        "id" : "49",
+        "x" : 199,
+        "y" : 2799
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "ContainerContext",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "114",
+        "vertices" : [ {
+          "x" : 7628,
+          "y" : 3399
+        } ]
+      }, {
+        "id" : "117",
+        "vertices" : [ {
+          "x" : 8362,
+          "y" : 3399
+        } ]
+      }, {
+        "id" : "128",
+        "vertices" : [ {
+          "x" : 1183,
+          "y" : 799
+        } ]
+      }, {
+        "id" : "50"
+      }, {
+        "id" : "52"
+      }, {
+        "id" : "53",
+        "vertices" : [ {
+          "x" : 694,
+          "y" : 1699
+        } ]
+      }, {
+        "id" : "55"
+      }, {
+        "id" : "57"
+      }, {
+        "id" : "58"
+      }, {
+        "id" : "59"
+      }, {
+        "id" : "60"
+      }, {
+        "id" : "61"
+      }, {
+        "id" : "62"
+      }, {
+        "id" : "64"
+      }, {
+        "id" : "65"
+      }, {
+        "id" : "66"
+      }, {
+        "id" : "67"
+      }, {
+        "id" : "68",
+        "vertices" : [ {
+          "x" : 3087,
+          "y" : 3399
+        } ]
+      }, {
+        "id" : "69"
+      }, {
+        "id" : "70"
+      }, {
+        "id" : "72"
+      }, {
+        "id" : "73",
+        "vertices" : [ {
+          "x" : 6087,
+          "y" : 3399
+        } ]
+      }, {
+        "id" : "74",
+        "vertices" : [ {
+          "x" : 6931,
+          "y" : 3392
+        } ]
+      }, {
+        "id" : "75"
+      }, {
+        "id" : "76",
+        "vertices" : [ {
+          "x" : 6754,
+          "y" : 3150
+        } ]
+      }, {
+        "id" : "77",
+        "vertices" : [ {
+          "x" : 6866,
+          "y" : 3099
+        }, {
+          "x" : 6087,
+          "y" : 3399
+        } ]
+      }, {
+        "id" : "78"
+      }, {
+        "id" : "79",
+        "vertices" : [ {
+          "x" : 6312,
+          "y" : 3871
+        } ]
+      }, {
+        "id" : "80",
+        "vertices" : [ {
+          "x" : 6612,
+          "y" : 3871
+        } ]
+      }, {
+        "id" : "81"
+      } ],
+      "softwareSystemId" : "6"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "48",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "49",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "SystmContext",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "115"
+      }, {
+        "id" : "118"
+      }, {
+        "id" : "128"
+      }, {
+        "id" : "51"
+      }, {
+        "id" : "52"
+      }, {
+        "id" : "54"
+      }, {
+        "id" : "56"
+      }, {
+        "id" : "63"
+      }, {
+        "id" : "71"
+      } ],
+      "softwareSystemId" : "6"
+    } ],
+    "systemLandscapeViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "49",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "SystemLandscape",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "115"
+      }, {
+        "id" : "118"
+      }, {
+        "id" : "51"
+      }, {
+        "id" : "52"
+      }, {
+        "id" : "54"
+      }, {
+        "id" : "56"
+      }, {
+        "id" : "63"
+      } ]
+    } ]
+  }
+}
