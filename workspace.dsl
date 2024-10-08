@@ -29,7 +29,12 @@ workspace {
                 }
                 
                 group "Subscription Service" {
-                    subscriptionApi = container "Subscription Service API" "Provides functionality with subscription (buying, checking for bought ones) via JSON/HTTPS API" "NestJS" "Hexagon"
+                    subscriptionApi = container "Subscription Service API" "Provides functionality with subscription" "NestJS" "Hexagon" {
+                        subscriptionController = component "Subscription Controller" "Handles HTTP request related to buying, canceling, checking for bought subscriptions"
+                        subscriptionService = component "Subsription Service" "Provides methods to interact with subscriptions"
+                        subscriptionRepository = component "Subscription Repository" "Provides methods to interact with subscriptions in database"
+                        userRepository = component "User Repository" "Provides methods to interact with users in database"
+                    }
                     subscriptionDb = container "Subscription Service Database" "Stores data about users' subscriptions" "PostgreSQL" "Database"
                 }
 
@@ -264,6 +269,15 @@ workspace {
         netflixSystem.supportPersistentApi.historyService -> netflixSystem.supportPersistentApi.historyRepository "Uses"
         netflixSystem.supportPersistentApi.historyRepository -> netflixSystem.supportDb "Reads and writes to" "SQL/TCP (EF Core)"
 
+
+        netflixSystem.singlePageApplication -> netflixSystem.subscriptionApi.subscriptionController "Makes API calls to" "JSON/HTTPS"
+        netflixSystem.subscriptionApi.subscriptionController -> netflixSystem.subscriptionApi.subscriptionService "Uses"
+        netflixSystem.subscriptionApi.subscriptionService -> netflixSystem.subscriptionApi.subscriptionRepository "Uses"
+        netflixSystem.subscriptionApi.subscriptionService -> netflixSystem.subscriptionApi.userRepository "Uses"
+        netflixSystem.subscriptionApi.subscriptionRepository -> netflixSystem.subscriptionDb "Reads and writes to" "SQL/TCP (TypeORM)"
+        netflixSystem.subscriptionApi.userRepository -> netflixSystem.subscriptionDb "Reads and writes to" "SQL/TCP (TypeORM)"
+            
+            
         netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP"
         netflixSystem.permS3Api -> netflixSystem.generalBroker "Sends message about successful upload" "AMQP"
         netflixSystem.permS3Api -> netflixSystem.permS3storage "Reads and writes to" "TCP" 
@@ -376,6 +390,11 @@ workspace {
         }
         
         component netflixSystem.generalApi "ComponentContext" {
+            include *
+            autolayout tb
+        }
+
+        component netflixSystem.subscriptionApi "ComponentContext_Subscription_API" {
             include *
             autolayout tb
         }
