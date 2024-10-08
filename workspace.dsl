@@ -68,6 +68,8 @@ workspace {
                         commentService = component "Comment service" "Provides methods to interact with comments, connected with assigning and deleting comments" "Service"
                         notificationService = component "Notification service" "Provides methods to interact with notifications, like getting user notifications" "Service"
                         authService = component "Authentication service" "Provides methods to authenticate user" "Service"
+                        redisService = component "Redis Service" "Handles interaction with Cache" "Service"
+                        s3Service = component "S3 Service" "Handles interaction with S3 storage" "Service"
                         
                         emailSender = component "Email sender" "Provides methods to send messages to mail for authentication" "Service"
                         
@@ -84,10 +86,7 @@ workspace {
                         commentNotificationRepository = component "Comment notification repository" "Provides methods to interact with notifications in database" "Repository"
                         tokenRepository = component "Token repository" "Provides methods to interact with tokens in identity database" "Repository"
                     }
-<<<<<<< HEAD
-=======
                     generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
->>>>>>> master
                     generalDb = container "General Database" "Stores reviews, contents' information, favourites, users" "PostgreSQL" "Database"
                     identityDb = container "Identity Database" "Stores data related to user's identity, auth" "PostgreSQL" "Database"
                     cache = container "Cache" "Caches presigned URLs from S3 storage" "Redis" "Database"
@@ -131,7 +130,7 @@ workspace {
         supportStaff -> netflixSystem.webApplication "Uses to chat with user"
         admin -> netflixSystem.webApplication "Uses to CRUD content and subscriptions"
         moderator -> netflixSystem.webApplication "Uses to moderate reviews"
-
+        
         netflixSystem.webApplication -> netflixSystem.singlePageApplication "Delivers to customer's web browser"
 
         netflixSystem.singlePageApplication.components -> netflixSystem.singlePageApplication.services "Uses"
@@ -154,11 +153,7 @@ workspace {
         netflixSystem.generalApi -> netflixSystem.identityDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi -> netflixSystem.cache "Reads and writes to" "TCP"
         netflixSystem.generalApi -> email "Sends e-mails using" "SMTP"
-<<<<<<< HEAD
         netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Reads and writes to" "RESP/TCP"
-=======
-        netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Sends metadata" 
->>>>>>> master
 
         netflixSystem.generalApi -> netflixSystem.multimediaApi "Sends message via broker to handle multimedia" "AMQP"
             netflixSystem.generalBroker -> netflixSystem.multimediaApi "Sends message to handle multimedia" "AMQP"
@@ -195,6 +190,13 @@ workspace {
         
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
+        netflixSystem.generalApi.contentService -> netflixSystem.subscriptionApi "Gets subscriptions" "JSON/HTTPS"
+        netflixSystem.generalApi.contentService -> netflixSystem.generalApi.redisService "Uses for caching metadata and incrementing values"
+        netflixSystem.generalApi.contentService -> netflixSystem.generalApi.s3Service "Uses for reading and writing multimedia"
+
+        netflixSystem.generalApi.redisService -> netflixSystem.cache "Reads and writes to" "TCP"
+        netflixSystem.generalApi.s3Service -> netflixSystem.tempS3storage "Writes to" "S3/TCP"
+        netflixSystem.generalApi.s3Service -> netflixSystem.permS3storage "Reads from" "S3/TCP"
         
         netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
         netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
