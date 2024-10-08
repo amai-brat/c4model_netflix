@@ -333,8 +333,9 @@ workspace {
             autolayout tb
         }
         
-        image netflixSystem.subscriptionApi.subscriptionService "CodeContext_Subscription_API"{
-            image "sub_service_code.png"
+        image netflixSystem.subscriptionApi "CodeContext_Subscription_Service"{
+            image "./subscription_service/sub_service_code.png"
+            title "[Code] Netflix - System Subscription Service"
         }
 
         styles {
