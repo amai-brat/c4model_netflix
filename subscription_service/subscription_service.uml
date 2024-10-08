@@ -1,0 +1,142 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Entities
+class Subscription {
+  - id: number
+  - name: string
+  - description: string
+  - max_resolution: number
+  - price: number
+}
+
+class User {
+  - id: number
+  - nickname: string
+}
+
+class UserSubscription {
+  - userId: number
+  - subscriptionId: number
+  - expiresAt: Date
+  - boughtAt: Date
+}
+
+' Repositories
+interface UserRepository {
+  + findOneByOrFail(criteria): Promise<User> <<throws NotFoundException>>
+}
+
+interface SubscriptionRepository {
+  + find(): Promise<Subscription[]> <<throws InternalServerErrorException>>
+  + findOneByOrFail(criteria): Promise<Subscription> <<throws NotFoundException>>
+}
+
+interface UserSubscriptionRepository {
+  + findBy(criteria): Promise<UserSubscription[]>
+  + findOneByOrFail(criteria): Promise<UserSubscription> <<throws NotFoundException>>
+  + save(userSubscription: UserSubscription): Promise<UserSubscription>
+  + remove(userSubscription: UserSubscription): Promise<void> <<throws NotFoundException>>
+}
+
+' Service
+class SubscriptionService {
+  + getAllSubscriptions(): Promise<Subscription[]> <<throws InternalServerErrorException>>
+  + getSubscriptionById(id: number): Promise<Subscription> <<throws NotFoundException>>
+  + getBoughtSubscriptionsByUserId(userId: number): Promise<UserSubscription[]> <<throws NotFoundException>>
+  + getCurrentSubscriptionsByUserId(userId: number): Promise<UserSubscription[]> <<throws NotFoundException>>
+  + processSubscriptionPurchase(userId: number, subscriptionId: number): Promise<UserSubscription> <<throws BadRequestException>>
+  + cancelSubscription(userId: number, subscriptionId: number): Promise<void> <<throws NotFoundException>>
+}
+
+' Controller
+class SubscriptionController {
+  + getAllSubscriptions(): Promise<Subscription[]> <<throws BadRequestException>>
+  + getSubscriptionById(subscriptionId: number): Promise<Subscription> <<throws BadRequestException>>
+  + getUserSubscriptions(req): Promise<UserSubscription[]> <<throws BadRequestException>>
+  + getCurrentUserSubscriptions(req): Promise<UserSubscription[]> <<throws BadRequestException>>
+  + buySubscription(req): Promise<UserSubscription> <<throws BadRequestException>>
+  + cancelSubscription(req): Promise<void> <<throws NotFoundException>>
+}
+
+' Relationships
+SubscriptionController --> SubscriptionService : uses
+SubscriptionService --> UserRepository : uses
+SubscriptionService --> SubscriptionRepository : uses
+SubscriptionService --> UserSubscriptionRepository : uses
+
+UserRepository ..> User : accesses
+SubscriptionRepository ..> Subscription : accesses
+UserSubscriptionRepository ..> UserSubscription : accesses
+
+User "1" --> "0..*" UserSubscription : subscribes
+Subscription "1" --> "0..*" UserSubscription : has subscribers
+
+' Exceptions
+SubscriptionController ..> BadRequestException : throws
+SubscriptionController ..> NotFoundException : throws
+SubscriptionService ..> BadRequestException : may throw
+SubscriptionService ..> NotFoundException : may throw
+SubscriptionService ..> InternalServerErrorException : may throw
+
+' Method Details with Exceptions
+note right of SubscriptionController::getAllSubscriptions
+- Calls SubscriptionService.getAllSubscriptions()
+- Throws BadRequestException on error
+end note
+
+note right of SubscriptionController::getSubscriptionById
+- Calls SubscriptionService.getSubscriptionById(id)
+- Throws BadRequestException if id is invalid
+end note
+
+note right of SubscriptionController::getUserSubscriptions
+- Calls SubscriptionService.getBoughtSubscriptionsByUserId(userId)
+- Throws BadRequestException on invalid operation
+end note
+
+note right of SubscriptionController::getCurrentUserSubscriptions
+- Calls SubscriptionService.getCurrentSubscriptionsByUserId(userId)
+- Throws BadRequestException on error
+end note
+
+note right of SubscriptionController::buySubscription
+- Calls SubscriptionService.processSubscriptionPurchase(userId, subscriptionId)
+- Throws BadRequestException on invalid request body
+end note
+
+note right of SubscriptionController::cancelSubscription
+- Calls SubscriptionService.cancelSubscription(userId, subscriptionId)
+- Throws NotFoundException if subscription not found
+end note
+
+note right of SubscriptionService::getAllSubscriptions
+- Calls SubscriptionRepository.find()
+- Throws InternalServerErrorException on failure
+end note
+
+note right of SubscriptionService::getSubscriptionById
+- Calls SubscriptionRepository.findOneByOrFail({ id })
+- Throws NotFoundException if subscription not found
+end note
+
+note right of SubscriptionService::getBoughtSubscriptionsByUserId
+- Calls UserRepository.findOneByOrFail({ id: userId })
+- Throws NotFoundException if user not found
+end note
+
+note right of SubscriptionService::processSubscriptionPurchase
+- Calls UserRepository.findOneByOrFail({ id: userId })
+- Creates a new UserSubscription
+- Calls UserSubscriptionRepository.save(userSubscription)
+- Throws BadRequestException if invalid data
+end note
+
+note right of SubscriptionService::cancelSubscription
+- Calls UserRepository.findOneByOrFail({ id: userId })
+- Calls UserSubscriptionRepository.findOneByOrFail({ userId, subscriptionId })
+- Calls UserSubscriptionRepository.remove(userSubscription)
+- Throws NotFoundException if subscription not found
+end note
+
+@enduml
