@@ -332,6 +332,10 @@ workspace {
             include *
             autolayout tb
         }
+        
+        image netflixSystem.subscriptionApi.subscriptionService "CodeContext_Subscription_API"{
+            image "sub_service_code.png"
+        }
 
         styles {
             element "Element" {
