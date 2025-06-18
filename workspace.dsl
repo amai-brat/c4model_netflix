@@ -56,6 +56,18 @@ workspace {
                         historyRepository = component "History Repository" "Provides methods to interact with support chat history from database"
                     }
                     supportDb = container "Support Service Database" "Stores data related to users' communication with support staff" "PostgreSQL" "Database"
+                    tempS3storage = container "Temporary S3 Storage" "Temporarily stores uploaded content" "Minio"
+                    tempMetadaStore = container "Temporary Metadata Store" "Temporarily stores contents' metadata and information about content uploading" "Redis" "Database"
+
+                    group "Permanent S3 Service" {
+                        permS3Api = container "Permanent S3 API" "Consumes messages to store content" "ASP.NET Core" "Hexagon" {
+                            fileConsumer = component "File Consumer" "Consumes messages to save files" 
+                            notificationPublisher = component "Notification Publisher" "Publishes message about saving process"
+                            fileService = component "File Service" "Saves files in storage"
+                        }
+                        permS3storage = container "Permanent S3 Storage" "Permanently stores content" "Minio"
+                    }
+
                 }
 
                 group "General Service" {
@@ -95,18 +107,10 @@ workspace {
                     generalDb = container "General Database" "Stores reviews, contents' information, favourites, users" "PostgreSQL" "Database"
                     identityDb = container "Identity Database" "Stores data related to user's identity, auth" "PostgreSQL" "Database"
                     cache = container "Cache" "Caches presigned URLs from S3 storage" "Redis" "Database"
-                    tempMetadaStore = container "Temporary Metadata Store" "Temporarily stores contents' metadata and information about content uploading" "Redis" "Database"
-                    tempS3storage = container "Temporary S3 Storage" "Temporarily stores uploaded content" "Minio"
+                    // tempS3storage = container "Temporary S3 Storage" "Temporarily stores uploaded content" "Minio"
                     generalBroker = container "General Broker" "" "RabbitMQ" "Pipe"
 
-                    group "Permanent S3 Service" {
-                        permS3Api = container "Permanent S3 API" "Consumes messages to store content" "ASP.NET Core" "Hexagon" {
-                            fileConsumer = component "File Consumer" "Consumes messages to save files" 
-                            notificationPublisher = component "Notification Publisher" "Publishes message about saving process"
-                            fileService = component "File Service" "Saves files in storage"
-                        }
-                        permS3storage = container "Permanent S3 Storage" "Permanently stores content" "Minio"
-                    }
+                    
 
                     group "Multimedia Service" {
                         multimediaApi = container "Multimedia API" "Consumes messages to process multimedia" "ASP.NET Core" "Hexagon" {
@@ -158,20 +162,22 @@ workspace {
         netflixSystem.generalApi -> netflixSystem.identityDb "Reads and writes to" "SQL/TCP (EF Core)"
         netflixSystem.generalApi -> netflixSystem.cache "Reads and writes to" "TCP"
         netflixSystem.generalApi -> email "Sends e-mails using" "SMTP"
-        netflixSystem.generalApi -> netflixSystem.tempMetadaStore "Reads and writes to" "RESP/TCP"
+        netflixSystem.supportApi -> netflixSystem.tempMetadaStore "Reads and writes to" "RESP/TCP"
 
         netflixSystem.generalApi -> netflixSystem.multimediaApi "Sends message via broker to handle multimedia" "AMQP"
             netflixSystem.generalBroker -> netflixSystem.multimediaApi "Sends message to handle multimedia" "AMQP"
             netflixSystem.generalApi -> netflixSystem.generalBroker "Sends message to handle multimedia" "AMQP"
         netflixSystem.multimediaApi -> netflixSystem.multimediaDb "Reads and writes to" "SQL/TCP (EF Core)"
-        netflixSystem.multimediaApi -> netflixSystem.permS3Api "Sends message via broker to save file in permanent storage" "AMQP"
+       // netflixSystem.multimediaApi -> netflixSystem.permS3Api "Sends message via broker to save file in permanent storage" "AMQP"
+        netflixSystem.permS3Api -> netflixSystem.tempS3storage "Copy file in permanent storage" "S3/TCP"
+        
             netflixSystem.multimediaApi -> netflixSystem.generalBroker "Sends message to save file in permanent storage" "AMQP" 
-        netflixSystem.multimediaApi -> netflixSystem.tempS3storage "Reads and writes to" "S3/TCP"
+       //  netflixSystem.multimediaApi -> netflixSystem.tempS3storage "Reads and writes to" "S3/TCP"
 
-        netflixSystem.generalApi -> netflixSystem.tempS3storage "Reads and writes to" "S3/TCP" 
+        netflixSystem.supportApi -> netflixSystem.tempS3storage "Reads and writes to" "S3/TCP" 
 
-        netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP" 
-        netflixSystem.permS3Api -> netflixSystem.generalApi "Sends message via broker about successful upload" "AMQP"
+        // netflixSystem.generalBroker -> netflixSystem.permS3Api "Sends message to save file in permanent storage" "AMQP" 
+        // netflixSystem.permS3Api -> netflixSystem.generalApi "Sends message via broker about successful upload" "AMQP"
         netflixSystem.permS3Api -> netflixSystem.permS3storage "Reads and writes to" "S3/TCP" 
         
         netflixSystem.singlePageApplication -> netflixSystem.generalApi.contentController "Makes API calls to" "JSON/HTTPS"
@@ -200,8 +206,8 @@ workspace {
         netflixSystem.generalApi.contentService -> netflixSystem.generalApi.s3Service "Uses for reading and writing multimedia"
 
         netflixSystem.generalApi.redisService -> netflixSystem.cache "Reads and writes to" "TCP"
-        netflixSystem.generalApi.s3Service -> netflixSystem.tempS3storage "Writes to" "S3/TCP"
-        netflixSystem.generalApi.s3Service -> netflixSystem.permS3storage "Reads from" "S3/TCP"
+        // netflixSystem.generalApi.s3Service -> netflixSystem.tempS3storage "Writes to" "S3/TCP"
+        // netflixSystem.generalApi.s3Service -> netflixSystem.permS3storage "Reads from" "S3/TCP"
         
         netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.contentRepository "Uses" "Interface"
         netflixSystem.generalApi.favouriteService -> netflixSystem.generalApi.userRepository "Uses" "Interface"
@@ -261,7 +267,7 @@ workspace {
         netflixSystem.supportApi.supportHub -> netflixSystem.supportApi.historyService "Uses"
         netflixSystem.supportApi.historyService -> netflixSystem.supportApi.historyPublisher "Uses"
         netflixSystem.supportApi.historyPublisher -> netflixSystem.supportBroker "Sends messages to save chat history" "AMQP"
-        netflixSystem.supportApi.historyService -> netflixSystem.supportPersistentApi.historyController "Gets history" "JSON/HTTPS"
+        netflixSystem.singlePageApplication -> netflixSystem.supportPersistentApi.historyController "Gets history" "JSON/HTTPS"
 
         netflixSystem.supportBroker -> netflixSystem.supportPersistentApi.historyConsumer "Consumes messages to save chat history" "AMQP"
         netflixSystem.supportPersistentApi.historyConsumer -> netflixSystem.supportPersistentApi.historyService "Uses"
